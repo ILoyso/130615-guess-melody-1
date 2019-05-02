@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
  * Component for welcome (first) screen
  * @param {Object} props
  * @return {*}
- * @constructor
  */
 const WelcomeScreen = (props) => {
   const {time, errorCount} = props;

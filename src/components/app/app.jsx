@@ -8,7 +8,6 @@ import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
  * Application component, here the whole process begins
  * @param {Object} props
  * @return {*}
- * @constructor
  */
 const App = (props) => {
   const {gameTime, errorCount} = props;

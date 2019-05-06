@@ -5,17 +5,17 @@ import WelcomeScreen from './welcome-screen.jsx';
 
 
 const settings = {
-  gameTime: 8,
   errorCount: 5,
+  time: 8,
   onPlayClick: jest.fn()
 };
 
 it(`WelcomeScreen correctly renders`, () => {
   const tree = renderer
     .create(<WelcomeScreen
-      time={settings.gameTime}
       errorCount={settings.errorCount}
       onPlayClick={settings.onPlayClick}
+      time={settings.time}
     />)
     .toJSON();
 

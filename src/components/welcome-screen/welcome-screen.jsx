@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  * @return {*}
  */
 const WelcomeScreen = (props) => {
-  const {time, errorCount, onPlayClick} = props;
+  const {errorCount, onPlayClick, time} = props;
 
   return <section className="welcome">
     <div className="welcome__logo">
@@ -29,9 +29,9 @@ const WelcomeScreen = (props) => {
 
 
 WelcomeScreen.propTypes = {
-  time: PropTypes.number.isRequired,
   errorCount: PropTypes.number.isRequired,
-  onPlayClick: PropTypes.func.isRequired
+  onPlayClick: PropTypes.func.isRequired,
+  time: PropTypes.number.isRequired
 };
 
 

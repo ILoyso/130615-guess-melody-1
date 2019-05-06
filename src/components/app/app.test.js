@@ -5,15 +5,15 @@ import App from './app.jsx';
 
 
 const settings = {
-  gameTime: 8,
-  errorCount: 5
+  errorCount: 5,
+  gameTime: 8
 };
 
 it(`App correctly renders`, () => {
   const tree = renderer
     .create(<App
-      gameTime={settings.gameTime}
       errorCount={settings.errorCount}
+      gameTime={settings.gameTime}
     />)
     .toJSON();
 

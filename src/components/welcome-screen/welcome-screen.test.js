@@ -6,8 +6,8 @@ import WelcomeScreen from './welcome-screen.jsx';
 
 const settings = {
   errorCount: 5,
-  time: 8,
-  onPlayClick: jest.fn()
+  onPlayClick: jest.fn(),
+  time: 8
 };
 
 it(`WelcomeScreen correctly renders`, () => {

@@ -10,18 +10,20 @@ import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
  * @return {*}
  */
 const App = (props) => {
-  const {gameTime, errorCount} = props;
+  const {errorCount, gameTime} = props;
+  const onPlayButtonClick = () => {};
 
   return <WelcomeScreen
-    time={gameTime}
     errorCount={errorCount}
+    onPlayClick={onPlayButtonClick}
+    time={gameTime}
   />;
 };
 
 
 App.propTypes = {
-  gameTime: PropTypes.number.isRequired,
-  errorCount: PropTypes.number.isRequired
+  errorCount: PropTypes.number.isRequired,
+  gameTime: PropTypes.number.isRequired
 };
 
 

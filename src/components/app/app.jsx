@@ -29,12 +29,13 @@ class App extends React.PureComponent {
   render() {
     const {questions} = this.props;
     const {questionId} = this.state;
-
-    return this._getScreen(questionId, this.props, () => {
+    const onAnswer = () => {
       this.setState({
         questionId: questionId + 1 >= questions.length ? -1 : questionId + 1,
       });
-    });
+    };
+
+    return this._getScreen(questionId, this.props, onAnswer);
   }
 
   /**

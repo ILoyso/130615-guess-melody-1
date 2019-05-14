@@ -11,7 +11,7 @@ const settings = {
 };
 
 it(`WelcomeScreen correctly renders`, () => {
-  const tree = renderer
+  const welcomeScreen = renderer
     .create(<WelcomeScreen
       errorCount={settings.errorCount}
       onPlayClick={settings.onPlayClick}
@@ -19,5 +19,5 @@ it(`WelcomeScreen correctly renders`, () => {
     />)
     .toJSON();
 
-  expect(tree).toMatchSnapshot();
+  expect(welcomeScreen).toMatchSnapshot();
 });

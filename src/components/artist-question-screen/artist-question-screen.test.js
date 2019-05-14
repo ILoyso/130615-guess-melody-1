@@ -30,12 +30,12 @@ const questionMock = {
 };
 
 it(`ArtistQuestionScreen correctly renders`, () => {
-  const tree = renderer
+  const artistScreen = renderer
     .create(<ArtistQuestionScreen
       question={questionMock.question}
       onAnswer={questionMock.onAnswer}
     />)
     .toJSON();
 
-  expect(tree).toMatchSnapshot();
+  expect(artistScreen).toMatchSnapshot();
 });

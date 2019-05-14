@@ -10,12 +10,12 @@ const settings = {
 };
 
 it(`App correctly renders`, () => {
-  const tree = renderer
+  const app = renderer
     .create(<App
       errorCount={settings.errorCount}
       gameTime={settings.gameTime}
     />)
     .toJSON();
 
-  expect(tree).toMatchSnapshot();
+  expect(app).toMatchSnapshot();
 });

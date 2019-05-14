@@ -28,12 +28,12 @@ const questionMock = {
 };
 
 it(`GenreQuestionScreen correctly renders`, () => {
-  const tree = renderer
+  const genreScreen = renderer
     .create(<GenreQuestionScreen
       question={questionMock.question}
       onAnswer={questionMock.onAnswer}
     />)
     .toJSON();
 
-  expect(tree).toMatchSnapshot();
+  expect(genreScreen).toMatchSnapshot();
 });

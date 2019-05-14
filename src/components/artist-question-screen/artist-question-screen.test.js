@@ -5,22 +5,22 @@ import ArtistQuestionScreen from './artist-question-screen.jsx';
 
 
 const questionMock = {
-  answers: [
-    {
-      artist: `Jared Leto`,
-      picture: `http://placehold.it/134x134`,
-    },
-    {
-      artist: `Dave Grohl`,
-      picture: `http://placehold.it/134x134`,
-    },
-    {
-      artist: `Kurt Cobain`,
-      picture: `http://placehold.it/134x134`,
-    },
-  ],
   onAnswer: jest.fn(),
   question: {
+    answers: [
+      {
+        artist: `Jared Leto`,
+        picture: `http://placehold.it/134x134`,
+      },
+      {
+        artist: `Dave Grohl`,
+        picture: `http://placehold.it/134x134`,
+      },
+      {
+        artist: `Kurt Cobain`,
+        picture: `http://placehold.it/134x134`,
+      },
+    ],
     song: {
       artist: `Kurt Cobain`,
       src: `path.mp3`,

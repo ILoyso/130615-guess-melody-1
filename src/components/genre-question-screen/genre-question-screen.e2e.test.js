@@ -1,8 +1,11 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import Enzyme, {shallow} from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
-import GenreQuestionScreen from './genre-question-screen.jsx';
+import GenreQuestionScreen from './genre-question-screen';
 
+
+Enzyme.configure({adapter: new Adapter()});
 
 const questionMock = {
   onAnswer: jest.fn(),
@@ -30,13 +33,19 @@ const questionMock = {
   }
 };
 
-it(`GenreQuestionScreen correctly renders`, () => {
-  const genreScreen = renderer
-    .create(<GenreQuestionScreen
-      onAnswer={questionMock.onAnswer}
-      question={questionMock.question}
-    />)
-    .toJSON();
+it(`When user answers genre question form is not sent`, () => {
+  const genreScreen = shallow(<GenreQuestionScreen
+    onAnswer={questionMock.onAnswer}
+    question={questionMock.question}
+  />);
 
-  expect(genreScreen).toMatchSnapshot();
+  const form = genreScreen.find(`form`);
+  const formSendPrevention = jest.fn();
+
+  form.simulate(`submit`, {
+    preventDefault: formSendPrevention,
+  });
+
+  expect(questionMock.onAnswer).toHaveBeenCalledTimes(1);
+  expect(formSendPrevention).toHaveBeenCalledTimes(1);
 });

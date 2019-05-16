@@ -11,7 +11,6 @@ const gameMock = {
 };
 
 it(`AudioPlayer correctly renders`, () => {
-
   const createNodeMock = (element) => {
     if (element.type === `audio`) {
       return {

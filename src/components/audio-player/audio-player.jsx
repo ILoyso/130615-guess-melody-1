@@ -12,29 +12,31 @@ class AudioPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this._audio = new Audio(this.props.src);
+    const {isPlaying, src} = props;
+
+    this._audio = new Audio(src);
 
     this.state = {
+      progress: this._audio.currentTime,
       isLoading: true,
-      isPlaying: false,
-      progress: this._audio.currentTime
+      isPlaying,
     };
 
     this._audio.oncanplaythrough = () => {
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
     };
 
     this._audio.onplay = () => {
       this.setState({
-        isPlaying: true
+        isPlaying: true,
       });
     };
 
     this._audio.onpause = () => {
       this.setState({
-        isPlaying: false
+        isPlaying: false,
       });
     };
 
@@ -60,7 +62,7 @@ class AudioPlayer extends React.PureComponent {
         disabled={isLoading}
         onClick={this._onPlayButtonClick}
         type="button"
-      ></button>
+      />
       <div className="track__status">
         <audio></audio>
       </div>
@@ -68,7 +70,7 @@ class AudioPlayer extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    if (this.state.isPlaying) {
+    if (this.props.isPlaying) {
       this._audio.play();
     } else {
       this._audio.pause();
@@ -80,6 +82,7 @@ class AudioPlayer extends React.PureComponent {
    * @private
    */
   _onPlayButtonClick() {
+    this.props.onPlayButtonClick();
     this.setState({
       isPlaying: !this.state.isPlaying
     });
@@ -88,6 +91,8 @@ class AudioPlayer extends React.PureComponent {
 
 
 AudioPlayer.propTypes = {
+  isPlaying: PropTypes.bool.isRequired,
+  onPlayButtonClick: PropTypes.func.isRequired,
   src: PropTypes.string.isRequired,
 };
 

@@ -4,37 +4,60 @@ import PropTypes from 'prop-types';
 import AudioPlayer from '../audio-player/audio-player.jsx';
 
 
-/**
- * Component for game where need to choose genre
- * @param {Object} props
- * @return {*}
- */
-const GenreQuestionScreen = (props) => {
-  const {onAnswer, question} = props;
-  const {answers} = question;
+// Component for game where need to choose genre
+class GenreQuestionScreen extends React.PureComponent {
 
-  return <section className="game__screen">
-    <h2 className="game__title">Выберите инди-рок треки</h2>
-    <form
-      className="game__tracks"
-      onSubmit={(event) => {
-        event.preventDefault();
-        onAnswer();
-      }}
-    >
+  /**
+   * Create GenreQuestionScreen component
+   * @param {Object} props
+   */
+  constructor(props) {
+    super(props);
 
-      {answers.map((answer, index) => <div className="track" key={index}>
-        <AudioPlayer src={answer.src}/>
-        <div className="game__answer">
-          <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} />
-          <label className="game__check" htmlFor={`answer-${index}`}>Отметить</label>
-        </div>
-      </div>)}
+    this.state = {
+      activePlayer: -1,
+    };
+  }
 
-      <button className="game__submit button" type="submit">Ответить</button>
-    </form>
-  </section>;
-};
+  /**
+   * Method for render genre game screen
+   * @return {*}
+   */
+  render() {
+    const {onAnswer, question} = this.props;
+    const {answers} = question;
+
+    return <section className="game__screen">
+      <h2 className="game__title">Выберите инди-рок треки</h2>
+      <form
+        className="game__tracks"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onAnswer();
+        }}
+      >
+
+        {answers.map((answer, index) => <div className="track" key={index}>
+          <AudioPlayer
+            isPlaying={index === this.state.activePlayer}
+            onPlayButtonClick={() => {
+              this.setState({
+                activePlayer: this.state.activePlayer === index ? -1 : index
+              });
+            }}
+            src={answer.src}
+          />
+          <div className="game__answer">
+            <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} />
+            <label className="game__check" htmlFor={`answer-${index}`}>Отметить</label>
+          </div>
+        </div>)}
+
+        <button className="game__submit button" type="submit">Ответить</button>
+      </form>
+    </section>;
+  }
+}
 
 
 GenreQuestionScreen.propTypes = {

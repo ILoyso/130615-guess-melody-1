@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AudioPlayer from '../audio-player/audio-player.jsx';
+
 
 /**
  * Component for game where need to choose artist
@@ -9,14 +11,11 @@ import PropTypes from 'prop-types';
  */
 const ArtistQuestionScreen = (props) => {
   const {question, onAnswer} = props;
-  const {answers} = question;
+  const {answers, song} = question;
 
   return <section className="game__screen">
     <h2 className="game__title">Кто исполняет эту песню?</h2>
-    <div className="game__track">
-      <button className="track__button track__button--play" type="button"></button>
-      <audio></audio>
-    </div>
+    <AudioPlayer src={song.src}/>
 
     <form className="game__artist" onChange={onAnswer}>
       {answers.map((answer, index) => <div className="artist" key={index}>

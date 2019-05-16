@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AudioPlayer from '../audio-player/audio-player.jsx';
+
 
 /**
  * Component for game where need to choose genre
@@ -22,10 +24,7 @@ const GenreQuestionScreen = (props) => {
     >
 
       {answers.map((answer, index) => <div className="track" key={index}>
-        <button className="track__button track__button--play" type="button"></button>
-        <div className="track__status">
-          <audio></audio>
-        </div>
+        <AudioPlayer src={answer.src}/>
         <div className="game__answer">
           <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} />
           <label className="game__check" htmlFor={`answer-${index}`}>Отметить</label>

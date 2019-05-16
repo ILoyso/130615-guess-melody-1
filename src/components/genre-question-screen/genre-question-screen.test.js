@@ -31,11 +31,20 @@ const questionMock = {
 };
 
 it(`GenreQuestionScreen correctly renders`, () => {
+  const createNodeMock = (element) => {
+    if (element.type === `audio`) {
+      return {
+        src: ``
+      };
+    }
+    return null;
+  };
+
   const genreScreen = renderer
     .create(<GenreQuestionScreen
       onAnswer={questionMock.onAnswer}
       question={questionMock.question}
-    />)
+    />, {createNodeMock})
     .toJSON();
 
   expect(genreScreen).toMatchSnapshot();

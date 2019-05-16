@@ -11,13 +11,24 @@ const gameMock = {
 };
 
 it(`AudioPlayer correctly renders`, () => {
+
+  const createNodeMock = (element) => {
+    if (element.type === `audio`) {
+      return {
+        src: ``
+      };
+    }
+    return null;
+  };
+
   const player = renderer
     .create(<AudioPlayer
       isPlaying={gameMock.isPlaying}
       onPlayButtonClick={gameMock.onPlayButtonClick}
       src={gameMock.src}
-    />)
+    />, {createNodeMock})
     .toJSON();
 
   expect(player).toMatchSnapshot();
 });
+

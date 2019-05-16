@@ -12,38 +12,12 @@ class AudioPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    const {isPlaying, src} = props;
-
-    this._audio = new Audio(src);
+    this._audioRef = React.createRef();
 
     this.state = {
-      progress: this._audio.currentTime,
+      progress: 0,
       isLoading: true,
-      isPlaying,
-    };
-
-    this._audio.oncanplaythrough = () => {
-      this.setState({
-        isLoading: false,
-      });
-    };
-
-    this._audio.onplay = () => {
-      this.setState({
-        isPlaying: true,
-      });
-    };
-
-    this._audio.onpause = () => {
-      this.setState({
-        isPlaying: false,
-      });
-    };
-
-    this._audio.ontimeupdate = () => {
-      this.setState({
-        progress: this._audio.currentTime
-      });
+      isPlaying: props.isPlaying,
     };
 
     this._onPlayButtonClick = this._onPlayButtonClick.bind(this);
@@ -64,17 +38,67 @@ class AudioPlayer extends React.PureComponent {
         type="button"
       />
       <div className="track__status">
-        <audio></audio>
+        <audio
+          ref={this._audioRef}
+        />
       </div>
     </div>;
   }
 
+  /**
+   * Method is invoked immediately after a component is mounted (inserted into the tree)
+   * Here created audio player and
+   */
+  componentDidMount() {
+    const audio = this._audioRef.current;
+
+    audio.src = this.props.src;
+
+    audio.oncanplaythrough = () => {
+      this.setState({
+        isLoading: false,
+      });
+    };
+
+    audio.onplay = () => {
+      this.setState({
+        isPlaying: true,
+      });
+    };
+
+    audio.onpause = () => {
+      this.setState({
+        isPlaying: false,
+      });
+    };
+
+    audio.ontimeupdate = () => {
+      this.setState({
+        progress: audio.currentTime
+      });
+    };
+  }
+
+  // Method  is invoked immediately after updating occurs. This method is not called for the initial render
   componentDidUpdate() {
+    const audio = this._audioRef.current;
+
     if (this.props.isPlaying) {
-      this._audio.play();
+      audio.play();
     } else {
-      this._audio.pause();
+      audio.pause();
     }
+  }
+
+  // Method is invoked immediately before a component is unmounted and destroyed
+  componentWillUnmount() {
+    const audio = this._audioRef.current;
+
+    audio.oncanplaythrough = null;
+    audio.onplay = null;
+    audio.onpause = null;
+    audio.ontimeupdate = null;
+    audio.src = ``;
   }
 
   /**

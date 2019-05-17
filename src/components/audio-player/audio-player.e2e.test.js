@@ -14,24 +14,56 @@ const gameMock = {
 };
 
 
-it(`On click to play button state correctly changes from play/pause`, () => {
-  global.window.HTMLMediaElement.prototype.pause = () => {};
+describe(`AudioPlayer Component`, () => {
 
-  const player = mount(
-      <AudioPlayer
-        isPlaying={gameMock.isPlaying}
-        onPlayButtonClick={gameMock.onPlayButtonClick}
-        src={gameMock.src}
-      />
-  );
+  it(`On click to play button state correctly changes from play/pause`, () => {
+    global.window.HTMLMediaElement.prototype.pause = () => {};
 
-  const button = player.find(`.track__button`);
+    const player = mount(
+        <AudioPlayer
+          isPlaying={gameMock.isPlaying}
+          onPlayButtonClick={gameMock.onPlayButtonClick}
+          src={gameMock.src}
+        />
+    );
 
-  player.setState({isLoading: false});
+    const button = player.find(`.track__button`);
 
-  button.simulate(`click`);
-  expect(player.state().isPlaying).toBe(true);
+    player.setState({isLoading: false});
 
-  button.simulate(`click`);
-  expect(player.state().isPlaying).toBe(false);
+    button.simulate(`click`);
+    expect(player.state().isPlaying).toBe(true);
+
+    button.simulate(`click`);
+    expect(player.state().isPlaying).toBe(false);
+  });
+
+  it(`If isPlaying = false "play" button shows correctly`, () => {
+    const player = mount(
+        <AudioPlayer
+          isPlaying={false}
+          onPlayButtonClick={gameMock.onPlayButtonClick}
+          src={gameMock.src}
+        />
+    );
+
+    const button = player.find(`.track__button`);
+
+    expect(button.hasClass(`track__button--play`)).toEqual(true);
+  });
+
+  it(`If isPlaying = true "pause" button shows correctly`, () => {
+    const player = mount(
+        <AudioPlayer
+          isPlaying={true}
+          onPlayButtonClick={gameMock.onPlayButtonClick}
+          src={gameMock.src}
+        />
+    );
+
+    const button = player.find(`.track__button`);
+
+    expect(button.hasClass(`track__button--pause`)).toEqual(true);
+  });
+
 });

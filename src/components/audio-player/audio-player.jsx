@@ -47,7 +47,7 @@ class AudioPlayer extends React.PureComponent {
 
   /**
    * Method is invoked immediately after a component is mounted (inserted into the tree)
-   * Here created audio player and
+   * Here created audio player and set all handlers (play, pause, update etc) for it
    */
   componentDidMount() {
     const audio = this._audioRef.current;
@@ -79,7 +79,10 @@ class AudioPlayer extends React.PureComponent {
     };
   }
 
-  // Method  is invoked immediately after updating occurs. This method is not called for the initial render
+  /**
+   * Method  is invoked immediately after updating occurs. This method is not called for the initial render
+   * Method works on player update and check, should it play or set pause
+   */
   componentDidUpdate() {
     const audio = this._audioRef.current;
 
@@ -90,7 +93,10 @@ class AudioPlayer extends React.PureComponent {
     }
   }
 
-  // Method is invoked immediately before a component is unmounted and destroyed
+  /**
+   * Method is invoked immediately before a component is unmounted and destroyed
+   * Here player destroying
+   */
   componentWillUnmount() {
     const audio = this._audioRef.current;
 

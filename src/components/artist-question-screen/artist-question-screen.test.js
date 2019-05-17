@@ -30,11 +30,20 @@ const questionMock = {
 };
 
 it(`ArtistQuestionScreen correctly renders`, () => {
+  const createNodeMock = (element) => {
+    if (element.type === `audio`) {
+      return {
+        src: ``
+      };
+    }
+    return null;
+  };
+
   const artistScreen = renderer
     .create(<ArtistQuestionScreen
       question={questionMock.question}
       onAnswer={questionMock.onAnswer}
-    />)
+    />, {createNodeMock})
     .toJSON();
 
   expect(artistScreen).toMatchSnapshot();

@@ -1,34 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import AudioPlayer from '../audio-player/audio-player.jsx';
 
-/**
- * Component for game where need to choose artist
- * @param {Object} props
- * @return {*}
- */
-const ArtistQuestionScreen = (props) => {
-  const {question, onAnswer} = props;
-  const {answers} = question;
 
-  return <section className="game__screen">
-    <h2 className="game__title">Кто исполняет эту песню?</h2>
-    <div className="game__track">
-      <button className="track__button track__button--play" type="button"></button>
-      <audio></audio>
-    </div>
+// Component for game where need to choose artist
+class ArtistQuestionScreen extends React.PureComponent {
 
-    <form className="game__artist" onChange={onAnswer}>
-      {answers.map((answer, index) => <div className="artist" key={index}>
-        <input className="artist__input visually-hidden" type="radio" name="answer" value={`artist-${index}`} id={`artist-${index}`} />
-        <label className="artist__name" htmlFor={`artist-${index}`}>
-          <img className="artist__picture" src={answer.picture} alt={answer.artist} />
-          {answer.artist}
-        </label>
-      </div>)}
-    </form>
-  </section>;
-};
+  /**
+   * Create ArtistQuestionScreen component
+   * @param {Object} props
+   */
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isPlaying: false,
+    };
+  }
+
+  /**
+   * Method for render artist game screen
+   * @return {*}
+   */
+  render() {
+    const {question, onAnswer} = this.props;
+    const {answers, song} = question;
+
+    return <section className="game__screen">
+      <h2 className="game__title">Кто исполняет эту песню?</h2>
+      <AudioPlayer
+        isPlaying={this.state.isPlaying}
+        onPlayButtonClick={() => {
+          this.setState({
+            isPlaying: !this.state.isPlaying
+          });
+        }}
+        src={song.src}
+      />
+
+      <form className="game__artist" onChange={onAnswer}>
+        {answers.map((answer, index) => <div className="artist" key={index}>
+          <input className="artist__input visually-hidden" type="radio" name="answer" value={`artist-${index}`} id={`artist-${index}`} />
+          <label className="artist__name" htmlFor={`artist-${index}`}>
+            <img className="artist__picture" src={answer.picture} alt={answer.artist} />
+            {answer.artist}
+          </label>
+        </div>)}
+      </form>
+    </section>;
+  }
+}
 
 
 ArtistQuestionScreen.propTypes = {

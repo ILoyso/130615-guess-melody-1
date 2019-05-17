@@ -41,63 +41,67 @@ const questionsMock = {
 };
 
 
-it(`On click on WelcomeScreen App switches to the first question`, () => {
-  const {questions} = questionsMock;
-  const app = mount(<App
-    errorCount={settings.errorCount}
-    gameTime={settings.gameTime}
-    questions={questions}
-  />);
+describe(`App Component`, () => {
 
-  expect(app.state(`questionId`)).toEqual(-1);
+  it(`On click on WelcomeScreen App switches to the first question`, () => {
+    const {questions} = questionsMock;
+    const app = mount(<App
+      errorCount={settings.errorCount}
+      gameTime={settings.gameTime}
+      questions={questions}
+    />);
 
-  const button = app.find(`button`);
-  button.simulate(`click`);
-  app.update();
+    expect(app.state(`questionId`)).toEqual(-1);
 
-  expect(app.state(`questionId`)).toEqual(0);
-});
+    const button = app.find(`button`);
+    button.simulate(`click`);
+    app.update();
 
-
-it(`Question answer switches to another question`, () => {
-  const {questions} = questionsMock;
-  const app = mount(<App
-    errorCount={settings.errorCount}
-    gameTime={settings.gameTime}
-    questions={questions}
-  />);
-
-  app.setState({
-    questionId: 0,
-  });
-  app.update();
-
-  const form = app.find(`form`);
-  form.simulate(`submit`, {
-    preventDefault() {},
+    expect(app.state(`questionId`)).toEqual(0);
   });
 
-  expect(app.state(`questionId`)).toEqual(1);
-});
 
+  it(`Question answer switches to another question`, () => {
+    const {questions} = questionsMock;
+    const app = mount(<App
+      errorCount={settings.errorCount}
+      gameTime={settings.gameTime}
+      questions={questions}
+    />);
 
-it(`Last question answer leads to the first screen`, () => {
-  const {questions} = questionsMock;
-  const app = mount(<App
-    errorCount={settings.errorCount}
-    gameTime={settings.gameTime}
-    questions={questions}
-  />);
+    app.setState({
+      questionId: 0,
+    });
+    app.update();
 
-  app.setState({
-    questionId: questions.length - 1,
+    const form = app.find(`form`);
+    form.simulate(`submit`, {
+      preventDefault() {},
+    });
+
+    expect(app.state(`questionId`)).toEqual(1);
   });
-  app.update();
 
-  const form = app.find(`form`);
-  form.simulate(`change`, {
-    preventDefault() {}
+
+  it(`Last question answer leads to the first screen`, () => {
+    const {questions} = questionsMock;
+    const app = mount(<App
+      errorCount={settings.errorCount}
+      gameTime={settings.gameTime}
+      questions={questions}
+    />);
+
+    app.setState({
+      questionId: questions.length - 1,
+    });
+    app.update();
+
+    const form = app.find(`form`);
+    form.simulate(`change`, {
+      preventDefault() {}
+    });
+
+    expect(app.state(`questionId`)).toEqual(-1);
   });
 
-  expect(app.state(`questionId`)).toEqual(-1);
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './components/app/app.jsx';
-import {settings} from './mocks/game-settings';
+import {settings} from './config';
 import {questions} from './mocks/questions';
 
 

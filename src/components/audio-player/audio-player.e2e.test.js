@@ -15,7 +15,7 @@ const gameMock = {
 
 
 it(`On click to play button state correctly changes from play/pause`, () => {
-  window.HTMLMediaElement.prototype.pause = () => {};
+  global.window.HTMLMediaElement.prototype.pause = () => {};
 
   const player = mount(
       <AudioPlayer

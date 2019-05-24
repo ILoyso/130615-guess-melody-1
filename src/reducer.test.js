@@ -77,4 +77,17 @@ describe(`Reducer`, () => {
       step: 1
     });
   });
+
+  it(`Reducer should reset game`, () => {
+    expect(reducer({
+      mistakes: 3,
+      step: 5
+    }, {
+      payload: 1,
+      type: `RESET_GAME`,
+    })).toEqual({
+      mistakes: 0,
+      step: -1
+    });
+  });
 });

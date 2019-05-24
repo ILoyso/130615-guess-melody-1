@@ -43,6 +43,8 @@ const reducer = (state = initialState, action) => {
     case `INCREMENT_STEP`: return Object.assign({}, state, {
       step: state.step + action.payload,
     });
+
+    case `RESET_GAME`: return Object.assign({}, initialState);
   }
 
   return state;

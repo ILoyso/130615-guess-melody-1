@@ -82,26 +82,4 @@ describe(`App Component`, () => {
     expect(app.state(`questionId`)).toEqual(1);
   });
 
-
-  it(`Last question answer leads to the first screen`, () => {
-    const {questions} = questionsMock;
-    const app = mount(<App
-      errorCount={settings.errorCount}
-      gameTime={settings.gameTime}
-      questions={questions}
-    />);
-
-    app.setState({
-      questionId: questions.length - 1,
-    });
-    app.update();
-
-    const form = app.find(`form`);
-    form.simulate(`change`, {
-      preventDefault() {}
-    });
-
-    expect(app.state(`questionId`)).toEqual(-1);
-  });
-
 });

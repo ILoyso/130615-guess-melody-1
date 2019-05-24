@@ -14,8 +14,12 @@ class GenreQuestionScreen extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const {question} = this.props;
+    const {answers} = question;
+
     this.state = {
       activePlayer: -1,
+      userAnswer: new Array(answers.length).fill(false),
     };
   }
 
@@ -33,7 +37,7 @@ class GenreQuestionScreen extends React.PureComponent {
         className="game__tracks"
         onSubmit={(event) => {
           event.preventDefault();
-          onAnswer();
+          onAnswer(this.state.userAnswer);
         }}
       >
 
@@ -48,7 +52,19 @@ class GenreQuestionScreen extends React.PureComponent {
             src={answer.src}
           />
           <div className="game__answer">
-            <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} />
+            <input
+              checked={this.state.userAnswer[index]}
+              className="game__input visually-hidden"
+              id={`answer-${index}`}
+              name="answer"
+              onChange={() => {
+                const userAnswer = [...this.state.userAnswer];
+                userAnswer[index] = !userAnswer[index];
+                this.setState({userAnswer});
+              }}
+              type="checkbox"
+              value={`answer-${index}`}
+            />
             <label className="game__check" htmlFor={`answer-${index}`}>Отметить</label>
           </div>
         </div>)}

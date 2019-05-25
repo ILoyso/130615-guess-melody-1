@@ -27,6 +27,36 @@ const isGenreAnswerCorrect = (userAnswer, question) =>
 
 
 /**
+ * Methods that returns actions for reducer (Object with type and payload params)
+ * @return {Object}
+ */
+const ActionCreator = {
+  incrementStep: () => ({
+    type: `INCREMENT_STEP`,
+    payload: 1,
+  }),
+
+  incrementMistake: (userAnswer, question) => {
+    let answerIsCorrect = false;
+
+    switch (question.type) {
+      case `artist`:
+        answerIsCorrect = isArtistAnswerCorrect(userAnswer, question);
+        break;
+      case `genre`:
+        answerIsCorrect = isGenreAnswerCorrect(userAnswer, question);
+        break;
+    }
+
+    return {
+      type: `INCREMENT_MISTAKES`,
+      payload: answerIsCorrect ? 0 : 1,
+    };
+  },
+};
+
+
+/**
  * Reducer for change application state
  * @param {Object} state [state = initialState]
  * @param {Object} action
@@ -52,6 +82,7 @@ const reducer = (state = initialState, action) => {
 
 
 export {
+  ActionCreator,
   isArtistAnswerCorrect,
   isGenreAnswerCorrect,
   reducer

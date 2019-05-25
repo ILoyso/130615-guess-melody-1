@@ -1,4 +1,4 @@
 export const settings = {
-  errorCount: 1,
+  errorCount: 3,
   gameTime: 5,
 };

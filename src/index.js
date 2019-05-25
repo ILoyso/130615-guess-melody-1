@@ -18,7 +18,7 @@ const init = (gameQuestions) => {
   // React render for App component
   ReactDOM.render(<Provider store={store}>
     <App
-      errorCount={errorCount}
+      maxMistakes={errorCount}
       gameTime={gameTime}
       questions={gameQuestions}
     />

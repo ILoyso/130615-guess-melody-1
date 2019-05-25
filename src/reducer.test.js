@@ -83,7 +83,6 @@ describe(`Business logic is correct`, () => {
       ]
     })).toEqual(true);
 
-
     expect(isGenreAnswerCorrect([false, false, false, false], {
       type: `genre`,
       genre: `jazz`,
@@ -108,7 +107,6 @@ describe(`Business logic is correct`, () => {
     })).toEqual(false);
   });
 });
-
 
 describe(`Action creators work correctly`, () => {
   it(`Action creator for incrementing step returns correct action`, () => {
@@ -142,7 +140,7 @@ describe(`Action creators work correctly`, () => {
           picture: ``,
         },
       ]
-    })).toEqual({
+    }, 0, Infinity)).toEqual({
       type: `INCREMENT_MISTAKES`,
       payload: 0,
     });
@@ -172,7 +170,7 @@ describe(`Action creators work correctly`, () => {
           picture: ``,
         },
       ]
-    })).toEqual({
+    }, 0, Infinity)).toEqual({
       type: `INCREMENT_MISTAKES`,
       payload: 1,
     });
@@ -200,7 +198,7 @@ describe(`Action creators work correctly`, () => {
           src: ``,
         },
       ]
-    })).toEqual({
+    }, 0, Infinity)).toEqual({
       type: `INCREMENT_MISTAKES`,
       payload: 0,
     });
@@ -228,13 +226,66 @@ describe(`Action creators work correctly`, () => {
           src: ``,
         },
       ]
-    })).toEqual({
+    }, 0, Infinity)).toEqual({
       type: `INCREMENT_MISTAKES`,
       payload: 1,
     });
   });
-});
 
+  it(`Action creator resets state if user is answered incorrectly and there're no mistakes left`, () => {
+    expect(ActionCreator.incrementMistake({
+      artist: `incorrect`,
+      picture: ``,
+    }, {
+      type: `artist`,
+      song: {
+        artist: `correct`,
+        src: ``,
+      },
+      answers: [
+        {
+          artist: `correct`,
+          picture: ``,
+        },
+        {
+          artist: `incorrect`,
+          picture: ``,
+        },
+        {
+          artist: `incorrect-2`,
+          picture: ``,
+        },
+      ]
+    }, Infinity, 0)).toEqual({
+      type: `RESET`,
+    });
+
+    expect(ActionCreator.incrementMistake([true, true, true, true], {
+      type: `genre`,
+      genre: `jazz`,
+      answers: [
+        {
+          genre: `blues`,
+          src: ``,
+        },
+        {
+          genre: `blues`,
+          src: ``,
+        },
+        {
+          genre: `blues`,
+          src: ``,
+        },
+        {
+          genre: `blues`,
+          src: ``,
+        },
+      ]
+    }, Infinity, 0)).toEqual({
+      type: `RESET`,
+    });
+  });
+});
 
 describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
@@ -255,7 +306,6 @@ describe(`Reducer works correctly`, () => {
       step: 0,
       mistakes: 0,
     });
-
     expect(reducer({
       step: -1,
       mistakes: 0,
@@ -279,7 +329,6 @@ describe(`Reducer works correctly`, () => {
       step: -1,
       mistakes: 1,
     });
-
     expect(reducer({
       step: -1,
       mistakes: 0,

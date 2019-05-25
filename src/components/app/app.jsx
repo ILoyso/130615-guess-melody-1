@@ -35,19 +35,24 @@ class App extends React.PureComponent {
     if (!question) {
       const {
         gameTime,
-        errorCount,
         onWelcomeScreenClick,
+        maxMistakes,
       } = this.props;
 
       return <WelcomeScreen
-        errorCount={errorCount}
+        errorCount={maxMistakes}
         onPlayClick={onWelcomeScreenClick}
         time={gameTime}
       />;
     }
 
-    const {onUserAnswer} = this.props;
-    const onAnswer = (userAnswer) => onUserAnswer(userAnswer, question);
+    const {
+      onUserAnswer,
+      maxMistakes,
+      mistakes,
+    } = this.props;
+
+    const onAnswer = (userAnswer) => onUserAnswer(userAnswer, question, mistakes, maxMistakes);
 
     return <GameWrapper
       game={this._getGameScreen(question, onAnswer)}
@@ -81,8 +86,9 @@ class App extends React.PureComponent {
 
 
 App.propTypes = {
-  errorCount: PropTypes.number.isRequired,
   gameTime: PropTypes.number.isRequired,
+  maxMistakes: PropTypes.number.isRequired,
+  mistakes: PropTypes.number.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
   step: PropTypes.number.isRequired,
@@ -110,9 +116,9 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 const mapDispatchToProps = (dispatch) => ({
   onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
 
-  onUserAnswer: (userAnswer, question) => {
+  onUserAnswer: (userAnswer, question, mistakes, maxMistakes) => {
     dispatch(ActionCreator.incrementStep());
-    dispatch(ActionCreator.incrementMistake(userAnswer, question));
+    dispatch(ActionCreator.incrementMistake(userAnswer, question, mistakes, maxMistakes));
   }
 });
 

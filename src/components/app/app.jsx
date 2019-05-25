@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from "react-redux";
 
+import {ActionCreator} from "../../reducer";
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
@@ -11,58 +13,45 @@ import GameWrapper from '../game-wrapper/game-wrapper.jsx';
 class App extends React.PureComponent {
 
   /**
-   * Create App component
-   * @param {Object} props
-   */
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      questionId: -1,
-    };
-  }
-
-  /**
    * Method for render app screen
    * @return {*}
    */
   render() {
-    const {questions} = this.props;
-    const {questionId} = this.state;
-    const onAnswer = () => {
-      this.setState({
-        questionId: questionId + 1 >= questions.length ? -1 : questionId + 1,
-      });
-    };
+    const {
+      questions,
+      step,
+    } = this.props;
 
-    return this._getScreen(questionId, this.props, onAnswer);
+    return this._getScreen(questions[step]);
   }
 
   /**
    * Method for check what screen should be rendered
-   * @param {Number} questionId
-   * @param {Object} props
-   * @param {Function} onAnswer
+   * @param {Object} question
    * @return {*}
    * @private
    */
-  _getScreen(questionId, props, onAnswer) {
-    if (questionId === -1) {
-      const {gameTime, errorCount} = props;
+  _getScreen(question) {
+    if (!question) {
+      const {
+        gameTime,
+        errorCount,
+        onWelcomeScreenClick,
+      } = this.props;
 
       return <WelcomeScreen
         errorCount={errorCount}
-        onPlayClick={onAnswer}
+        onPlayClick={onWelcomeScreenClick}
         time={gameTime}
       />;
     }
 
-    const {questions} = props;
-    const currentQuestion = questions[questionId];
+    const {onUserAnswer} = this.props;
+    const onAnswer = (userAnswer) => onUserAnswer(userAnswer, question);
 
     return <GameWrapper
-      game={this._getGameScreen(currentQuestion, onAnswer)}
-      gameType={currentQuestion.type}
+      game={this._getGameScreen(question, onAnswer)}
+      gameType={question.type}
     />;
   }
 
@@ -94,8 +83,40 @@ class App extends React.PureComponent {
 App.propTypes = {
   errorCount: PropTypes.number.isRequired,
   gameTime: PropTypes.number.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.object)
+  onUserAnswer: PropTypes.func.isRequired,
+  onWelcomeScreenClick: PropTypes.func.isRequired,
+  step: PropTypes.number.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object),
 };
 
 
-export default App;
+/**
+ * Function for connect state with app
+ * @param {Object} state
+ * @param {Object} ownProps
+ * @return {Object}
+ */
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  step: state.step,
+  mistakes: state.mistakes,
+});
+
+
+/**
+ * Function for connect action creator methods with app
+ * @param {Function} dispatch
+ * @return {Function}
+ */
+const mapDispatchToProps = (dispatch) => ({
+  onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
+
+  onUserAnswer: (userAnswer, question) => {
+    dispatch(ActionCreator.incrementStep());
+    dispatch(ActionCreator.incrementMistake(userAnswer, question));
+  }
+});
+
+
+export {App};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

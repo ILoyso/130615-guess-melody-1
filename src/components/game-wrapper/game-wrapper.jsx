@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Mistakes from '../mistakes/mistakes.jsx';
 
 
 /**
@@ -8,7 +9,11 @@ import PropTypes from 'prop-types';
  * @return {*}
  */
 const GameWrapper = (props) => {
-  const {game, gameType} = props;
+  const {
+    game,
+    gameType,
+    mistakes
+  } = props;
 
   return <section className={`game game--${gameType}`}>
     <header className="game__header">
@@ -27,11 +32,9 @@ const GameWrapper = (props) => {
         <span className="timer__secs">00</span>
       </div>
 
-      <div className="game__mistakes">
-        <div className="wrong"></div>
-        <div className="wrong"></div>
-        <div className="wrong"></div>
-      </div>
+      <Mistakes
+        mistakes={mistakes}
+      />
     </header>
     {game}
   </section>;
@@ -39,8 +42,9 @@ const GameWrapper = (props) => {
 
 
 GameWrapper.propTypes = {
-  game: PropTypes.node,
-  gameType: PropTypes.string,
+  game: PropTypes.node.isRequired,
+  gameType: PropTypes.string.isRequired,
+  mistakes: PropTypes.number.isRequired
 };
 
 

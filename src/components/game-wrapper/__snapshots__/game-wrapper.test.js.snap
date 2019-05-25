@@ -63,17 +63,7 @@ exports[`ArtistQuestionScreen correctly renders 1`] = `
     </div>
     <div
       className="game__mistakes"
-    >
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
-    </div>
+    />
   </header>
   <div>
     Some mock template

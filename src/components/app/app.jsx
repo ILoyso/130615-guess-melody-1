@@ -57,6 +57,7 @@ class App extends React.PureComponent {
     return <GameWrapper
       game={this._getGameScreen(question, onAnswer)}
       gameType={question.type}
+      mistakes={mistakes}
     />;
   }
 

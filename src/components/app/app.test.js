@@ -52,55 +52,58 @@ const mock = {
 };
 
 
-it(`App correctly renders first screen`, () => {
-  const {questions} = mock;
-  const tree = renderer.create(<App
-    mistakes={0}
-    maxMistakes={Infinity}
-    gameTime={100}
-    questions={questions}
-    step={-1}
-    onUserAnswer={jest.fn()}
-    onWelcomeScreenClick={jest.fn()}
-  />).toJSON();
+describe(`App Component`, () => {
+  it(`App correctly renders first screen`, () => {
+    const {questions} = mock;
+    const app = renderer.create(<App
+      mistakes={0}
+      maxMistakes={Infinity}
+      gameTime={100}
+      questions={questions}
+      step={-1}
+      onUserAnswer={jest.fn()}
+      onWelcomeScreenClick={jest.fn()}
+    />).toJSON();
 
-  expect(tree).toMatchSnapshot();
+    expect(app).toMatchSnapshot();
+  });
+
+  it(`App correctly renders genre question screen`, () => {
+    const {questions} = mock;
+    const app = renderer.create(<App
+      mistakes={0}
+      maxMistakes={Infinity}
+      gameTime={100}
+      questions={questions}
+      step={1}
+      onUserAnswer={jest.fn()}
+      onWelcomeScreenClick={jest.fn()}
+    />, {
+      createNodeMock: () => {
+        return {};
+      }
+    }).toJSON();
+
+    expect(app).toMatchSnapshot();
+  });
+
+  it(`App correctly renders artist question screen`, () => {
+    const {questions} = mock;
+    const app = renderer.create(<App
+      mistakes={0}
+      maxMistakes={Infinity}
+      gameTime={100}
+      questions={questions}
+      step={2}
+      onUserAnswer={jest.fn()}
+      onWelcomeScreenClick={jest.fn()}
+    />, {
+      createNodeMock: () => {
+        return {};
+      }
+    }).toJSON();
+
+    expect(app).toMatchSnapshot();
+  });
 });
 
-it(`App correctly renders genre question screen`, () => {
-  const {questions} = mock;
-  const tree = renderer.create(<App
-    mistakes={0}
-    maxMistakes={Infinity}
-    gameTime={100}
-    questions={questions}
-    step={1}
-    onUserAnswer={jest.fn()}
-    onWelcomeScreenClick={jest.fn()}
-  />, {
-    createNodeMock: () => {
-      return {};
-    }
-  }).toJSON();
-
-  expect(tree).toMatchSnapshot();
-});
-
-it(`App correctly renders artist question screen`, () => {
-  const {questions} = mock;
-  const tree = renderer.create(<App
-    mistakes={0}
-    maxMistakes={Infinity}
-    gameTime={100}
-    questions={questions}
-    step={2}
-    onUserAnswer={jest.fn()}
-    onWelcomeScreenClick={jest.fn()}
-  />, {
-    createNodeMock: () => {
-      return {};
-    }
-  }).toJSON();
-
-  expect(tree).toMatchSnapshot();
-});

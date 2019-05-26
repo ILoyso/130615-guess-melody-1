@@ -4,6 +4,13 @@ const initialState = {
 };
 
 
+const ActionType = {
+  INCREMENT_STEP: `INCREMENT_STEP`,
+  INCREMENT_MISTAKES: `INCREMENT_MISTAKES`,
+  RESET_GAME: `RESET_GAME`
+};
+
+
 /**
  * Function for check user answer for artist question type
  * @param {Object} userAnswer
@@ -32,7 +39,7 @@ const isGenreAnswerCorrect = (userAnswer, question) =>
  */
 const ActionCreator = {
   incrementStep: () => ({
-    type: `INCREMENT_STEP`,
+    type: ActionType.INCREMENT_STEP,
     payload: 1,
   }),
 
@@ -50,12 +57,12 @@ const ActionCreator = {
 
     if (!answerIsCorrect && mistakes + 1 >= maxMistakes) {
       return {
-        type: `RESET`,
+        type: ActionType.RESET_GAME,
       };
     }
 
     return {
-      type: `INCREMENT_MISTAKES`,
+      type: ActionType.INCREMENT_MISTAKES,
       payload: answerIsCorrect ? 0 : 1,
     };
   },
@@ -72,15 +79,15 @@ const ActionCreator = {
  */
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case `INCREMENT_MISTAKES`: return Object.assign({}, state, {
+    case ActionType.INCREMENT_MISTAKES: return Object.assign({}, state, {
       mistakes: state.mistakes + action.payload
     });
 
-    case `INCREMENT_STEP`: return Object.assign({}, state, {
+    case ActionType.INCREMENT_STEP: return Object.assign({}, state, {
       step: state.step + action.payload,
     });
 
-    case `RESET_GAME`: return Object.assign({}, initialState);
+    case ActionType.RESET_GAME: return Object.assign({}, initialState);
   }
 
   return state;

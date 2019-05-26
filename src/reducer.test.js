@@ -257,7 +257,7 @@ describe(`Action creators work correctly`, () => {
         },
       ]
     }, Infinity, 0)).toEqual({
-      type: `RESET`,
+      type: `RESET_GAME`,
     });
 
     expect(ActionCreator.incrementMistake([true, true, true, true], {
@@ -282,7 +282,7 @@ describe(`Action creators work correctly`, () => {
         },
       ]
     }, Infinity, 0)).toEqual({
-      type: `RESET`,
+      type: `RESET_GAME`,
     });
   });
 });

@@ -39,9 +39,16 @@ class ArtistQuestionScreen extends React.PureComponent {
         src={song.src}
       />
 
-      <form className="game__artist" onChange={onAnswer}>
+      <form className="game__artist">
         {answers.map((answer, index) => <div className="artist" key={index}>
-          <input className="artist__input visually-hidden" type="radio" name="answer" value={`artist-${index}`} id={`artist-${index}`} />
+          <input
+            className="artist__input visually-hidden"
+            id={`artist-${index}`}
+            name="answer"
+            onClick={() => onAnswer(answer)}
+            type="radio"
+            value={`artist-${index}`}
+          />
           <label className="artist__name" htmlFor={`artist-${index}`}>
             <img className="artist__picture" src={answer.picture} alt={answer.artist} />
             {answer.artist}

@@ -8,7 +8,6 @@ import GenreQuestionScreen from './genre-question-screen';
 Enzyme.configure({adapter: new Adapter()});
 
 const questionMock = {
-  onAnswer: jest.fn(),
   question: {
     answers: [
       {
@@ -33,19 +32,68 @@ const questionMock = {
   }
 };
 
-it(`When user answers genre question form is not sent`, () => {
-  const genreScreen = shallow(<GenreQuestionScreen
-    onAnswer={questionMock.onAnswer}
-    question={questionMock.question}
-  />);
+describe(`GenreQuestionScreen`, () => {
+  it(`When user answers genre question form is not sent`, () => {
+    const {question} = questionMock;
+    const onAnswer = jest.fn();
 
-  const form = genreScreen.find(`form`);
-  const formSendPrevention = jest.fn();
+    const genreQuestion = shallow(<GenreQuestionScreen
+      onAnswer={onAnswer}
+      question={question}
+    />);
 
-  form.simulate(`submit`, {
-    preventDefault: formSendPrevention,
+    const form = genreQuestion.find(`form`);
+    const formSendPrevention = jest.fn();
+
+    form.simulate(`submit`, {
+      preventDefault: formSendPrevention,
+    });
+
+    expect(onAnswer).toHaveBeenCalledTimes(1);
+    expect(formSendPrevention).toHaveBeenCalledTimes(1);
   });
 
-  expect(questionMock.onAnswer).toHaveBeenCalledTimes(1);
-  expect(formSendPrevention).toHaveBeenCalledTimes(1);
+  it(`Rendered checkboxes are synchronized with state`, () => {
+    const {question} = questionMock;
+    const onAnswer = jest.fn();
+
+    const genreQuestion = shallow(<GenreQuestionScreen
+      onAnswer={onAnswer}
+      question={question}
+    />);
+
+    expect(genreQuestion.state(`userAnswer`)).toEqual([false, false, false, false]);
+
+    const inputs = genreQuestion.find(`input`);
+    const inputOne = inputs.at(0);
+    const inputTwo = inputs.at(1);
+
+    inputOne.simulate(`change`);
+    expect(genreQuestion.state(`userAnswer`)).toEqual([true, false, false, false]);
+
+    inputOne.simulate(`change`);
+    expect(genreQuestion.state(`userAnswer`)).toEqual([false, false, false, false]);
+
+    inputTwo.simulate(`change`);
+    expect(genreQuestion.state(`userAnswer`)).toEqual([false, true, false, false]);
+  });
+
+  it(`User answer passed to callback is consistent with internal component state`, () => {
+    const {question} = questionMock;
+    const onAnswer = jest.fn();
+
+    const genreQuestion = shallow(<GenreQuestionScreen
+      onAnswer={onAnswer}
+      question={question}
+    />);
+
+    const form = genreQuestion.find(`form`);
+    const inputTwo = genreQuestion.find(`input`).at(1);
+    inputTwo.simulate(`change`);
+    form.simulate(`submit`, {preventDefault() {}});
+
+    expect(genreQuestion.state(`userAnswer`)).toEqual([false, true, false, false]);
+    expect(onAnswer).toHaveBeenCalledTimes(1);
+    expect(onAnswer).toHaveBeenNthCalledWith(1, [false, true, false, false]);
+  });
 });

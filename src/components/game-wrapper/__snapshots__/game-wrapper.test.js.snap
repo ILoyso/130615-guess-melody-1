@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ArtistQuestionScreen correctly renders 1`] = `
+exports[`GameWrapper correctly renders 1`] = `
 <section
   className="game game--genre"
 >
@@ -64,12 +64,6 @@ exports[`ArtistQuestionScreen correctly renders 1`] = `
     <div
       className="game__mistakes"
     >
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
       <div
         className="wrong"
       />

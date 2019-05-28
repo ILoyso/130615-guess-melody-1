@@ -32,14 +32,37 @@ const questionMock = {
   }
 };
 
-it(`Change form on artist game correctly works`, () => {
-  const artistScreen = shallow(<ArtistQuestionScreen
-    onAnswer={questionMock.onAnswer}
-    question={questionMock.question}
+it(`Click on user answer should pass to the callback data-object from which this answer was created`, () => {
+  const {onAnswer, question} = questionMock;
+
+  const screen = shallow(<ArtistQuestionScreen
+    onAnswer={onAnswer}
+    question={question}
   />);
 
-  const form = artistScreen.find(`form`);
-  form.simulate(`change`);
+  const answerInputs = screen.find(`input`);
+  const answerOne = answerInputs.at(0);
+  const answerTwo = answerInputs.at(1);
+  const answerThree = answerInputs.at(2);
 
-  expect(questionMock.onAnswer).toHaveBeenCalledTimes(1);
+  answerOne.simulate(`click`, onAnswer);
+  answerTwo.simulate(`click`, onAnswer);
+  answerThree.simulate(`click`, onAnswer);
+
+  expect(onAnswer).toHaveBeenCalledTimes(3);
+
+  expect(onAnswer).toHaveBeenNthCalledWith(1, {
+    artist: `Jared Leto`,
+    picture: `http://placehold.it/134x134`,
+  });
+
+  expect(onAnswer).toHaveBeenNthCalledWith(2, {
+    artist: `Dave Grohl`,
+    picture: `http://placehold.it/134x134`,
+  });
+
+  expect(onAnswer).toHaveBeenNthCalledWith(3, {
+    artist: `Kurt Cobain`,
+    picture: `http://placehold.it/134x134`,
+  });
 });

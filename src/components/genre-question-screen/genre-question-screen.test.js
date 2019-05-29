@@ -7,6 +7,7 @@ import GenreQuestionScreen from './genre-question-screen.jsx';
 const questionMock = {
   activePlayer: -1,
   onAnswer: jest.fn(),
+  onChange: jest.fn(),
   onPlayButtonClick: jest.fn(),
   question: {
     answers: [
@@ -36,6 +37,7 @@ it(`GenreQuestionScreen correctly renders`, () => {
   const {
     activePlayer,
     onAnswer,
+    onChange,
     onPlayButtonClick,
     question
   } = questionMock;
@@ -53,8 +55,10 @@ it(`GenreQuestionScreen correctly renders`, () => {
     .create(<GenreQuestionScreen
       activePlayer={activePlayer}
       onAnswer={onAnswer}
+      onChange={onChange}
       onPlayButtonClick={onPlayButtonClick}
       question={question}
+      userAnswer={[false, false, false, false]}
     />, {createNodeMock})
     .toJSON();
 

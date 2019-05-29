@@ -8,21 +8,6 @@ import AudioPlayer from '../audio-player/audio-player.jsx';
 class GenreQuestionScreen extends React.PureComponent {
 
   /**
-   * Create GenreQuestionScreen component
-   * @param {Object} props
-   */
-  constructor(props) {
-    super(props);
-
-    const {question} = this.props;
-    const {answers} = question;
-
-    this.state = {
-      userAnswer: new Array(answers.length).fill(false),
-    };
-  }
-
-  /**
    * Method for render genre game screen
    * @return {*}
    */
@@ -30,8 +15,10 @@ class GenreQuestionScreen extends React.PureComponent {
     const {
       activePlayer,
       onAnswer,
+      onChange,
       onPlayButtonClick,
-      question
+      question,
+      userAnswer
     } = this.props;
 
     const {answers} = question;
@@ -42,7 +29,7 @@ class GenreQuestionScreen extends React.PureComponent {
         className="game__tracks"
         onSubmit={(event) => {
           event.preventDefault();
-          onAnswer(this.state.userAnswer);
+          onAnswer();
         }}
       >
 
@@ -54,15 +41,11 @@ class GenreQuestionScreen extends React.PureComponent {
           />
           <div className="game__answer">
             <input
-              checked={this.state.userAnswer[index]}
+              checked={userAnswer[index]}
               className="game__input visually-hidden"
               id={`answer-${index}`}
               name="answer"
-              onChange={() => {
-                const userAnswer = [...this.state.userAnswer];
-                userAnswer[index] = !userAnswer[index];
-                this.setState({userAnswer});
-              }}
+              onChange={() => onChange(index)}
               type="checkbox"
               value={`answer-${index}`}
             />
@@ -80,6 +63,7 @@ class GenreQuestionScreen extends React.PureComponent {
 GenreQuestionScreen.propTypes = {
   activePlayer: PropTypes.number.isRequired,
   onAnswer: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   onPlayButtonClick: PropTypes.func.isRequired,
   question: PropTypes.shape({
     answers: PropTypes.arrayOf(PropTypes.shape({
@@ -89,6 +73,7 @@ GenreQuestionScreen.propTypes = {
     genre: PropTypes.oneOf([`rock`, `jazz`, `blues`]).isRequired,
     type: PropTypes.oneOf([`genre`, `artist`]).isRequired,
   }).isRequired,
+  userAnswer: PropTypes.arrayOf(PropTypes.bool).isRequired
 };
 
 

@@ -5,28 +5,22 @@ import AudioPlayer from './audio-player';
 
 
 const gameMock = {
-  isPlaying: false,
-  onPlayButtonClick: jest.fn(),
   src: `https://upload.wikimedia.org/wikipedia/commons/1/1f/Uganda_flag_and_national_anthem_-_Oh_Uganda_Land_o.ogg`,
 };
 
 it(`AudioPlayer correctly renders`, () => {
-  const createNodeMock = (element) => {
-    if (element.type === `audio`) {
-      return {
-        src: ``
-      };
-    }
-    return null;
-  };
+  const {src} = gameMock;
+  const onPlayButtonClick = jest.fn();
+  const renderAudio = jest.fn();
 
   const player = renderer
     .create(<AudioPlayer
-      isPlaying={gameMock.isPlaying}
-      onPlayButtonClick={gameMock.onPlayButtonClick}
-      src={gameMock.src}
-    />, {createNodeMock})
-    .toJSON();
+      isPlaying={false}
+      isLoading={true}
+      onPlayButtonClick={onPlayButtonClick}
+      renderAudio={renderAudio}
+      src={src}
+    />).toJSON();
 
   expect(player).toMatchSnapshot();
 });

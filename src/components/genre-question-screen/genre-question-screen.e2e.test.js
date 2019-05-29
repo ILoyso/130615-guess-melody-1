@@ -8,6 +8,7 @@ import GenreQuestionScreen from './genre-question-screen';
 Enzyme.configure({adapter: new Adapter()});
 
 const questionMock = {
+  activePlayer: -1,
   question: {
     answers: [
       {
@@ -34,11 +35,17 @@ const questionMock = {
 
 describe(`GenreQuestionScreen`, () => {
   it(`When user answers genre question form is not sent`, () => {
-    const {question} = questionMock;
+    const {
+      activePlayer,
+      question
+    } = questionMock;
     const onAnswer = jest.fn();
+    const onPlayButtonClick = jest.fn();
 
     const genreQuestion = shallow(<GenreQuestionScreen
+      activePlayer={activePlayer}
       onAnswer={onAnswer}
+      onPlayButtonClick={onPlayButtonClick}
       question={question}
     />);
 
@@ -54,11 +61,17 @@ describe(`GenreQuestionScreen`, () => {
   });
 
   it(`Rendered checkboxes are synchronized with state`, () => {
-    const {question} = questionMock;
+    const {
+      activePlayer,
+      question
+    } = questionMock;
     const onAnswer = jest.fn();
+    const onPlayButtonClick = jest.fn();
 
     const genreQuestion = shallow(<GenreQuestionScreen
+      activePlayer={activePlayer}
       onAnswer={onAnswer}
+      onPlayButtonClick={onPlayButtonClick}
       question={question}
     />);
 
@@ -79,11 +92,17 @@ describe(`GenreQuestionScreen`, () => {
   });
 
   it(`User answer passed to callback is consistent with internal component state`, () => {
-    const {question} = questionMock;
+    const {
+      activePlayer,
+      question
+    } = questionMock;
     const onAnswer = jest.fn();
+    const onPlayButtonClick = jest.fn();
 
     const genreQuestion = shallow(<GenreQuestionScreen
+      activePlayer={activePlayer}
       onAnswer={onAnswer}
+      onPlayButtonClick={onPlayButtonClick}
       question={question}
     />);
 

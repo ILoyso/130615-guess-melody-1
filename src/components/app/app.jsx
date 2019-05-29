@@ -8,6 +8,10 @@ import ArtistQuestionScreen from '../artist-question-screen/artist-question-scre
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
 import GameWrapper from '../game-wrapper/game-wrapper.jsx';
 
+import withActivePlayer from '../../hocs/with-active-player/with-active-player';
+
+const GenreQuestionScreenWrapped = withActivePlayer(GenreQuestionScreen);
+
 
 // Application component, here the whole process begins
 class App extends React.PureComponent {
@@ -70,7 +74,7 @@ class App extends React.PureComponent {
    */
   _getGameScreen(question, onAnswer) {
     switch (question.type) {
-      case `genre`: return <GenreQuestionScreen
+      case `genre`: return <GenreQuestionScreenWrapped
         question={question}
         onAnswer={onAnswer}
       />;

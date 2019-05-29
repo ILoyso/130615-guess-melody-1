@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
-import {ActionCreator} from "../../reducer";
-import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import {ActionCreator} from '../../reducer';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
-import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
+import GameOverScreen from '../game-over-screen/game-over-screen.jsx';
 import GameWrapper from '../game-wrapper/game-wrapper.jsx';
+import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
+import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import WinScreen from '../win-screen/win-screen.jsx';
 
-import withTransformProps from '../../hocs/with-transform-props/with-transform-props';
 import withActivePlayer from '../../hocs/with-active-player/with-active-player';
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props';
 import withUserAnswer from '../../hocs/with-user-answer/with-user-answer';
 
 
@@ -51,25 +53,41 @@ class App extends React.PureComponent {
   _getScreen(question) {
     if (!question) {
       const {
-        gameTime,
-        onWelcomeScreenClick,
-        maxMistakes,
+        step,
+        questions
       } = this.props;
 
-      return <WelcomeScreen
-        errorCount={maxMistakes}
-        onPlayClick={onWelcomeScreenClick}
-        time={gameTime}
-      />;
+      if (step > questions.length - 1) {
+        return <WinScreen/>;
+      } else {
+        const {
+          maxMistakes,
+          gameTime,
+          onWelcomeScreenClick,
+        } = this.props;
+
+        return <WelcomeScreen
+          errorCount={maxMistakes}
+          gameTime={gameTime}
+          onClick={onWelcomeScreenClick}
+        />;
+      }
     }
 
     const {
       onUserAnswer,
       maxMistakes,
       mistakes,
+      resetGame
     } = this.props;
 
-    const onAnswer = (userAnswer) => onUserAnswer(userAnswer, question, mistakes, maxMistakes);
+    if (mistakes >= maxMistakes) {
+      return <GameOverScreen
+        onRelaunchButtonClick={resetGame}
+      />;
+    }
+
+    const onAnswer = (userAnswer) => onUserAnswer(userAnswer, question);
 
     return <GameWrapper
       game={this._getGameScreen(question, onAnswer)}
@@ -110,8 +128,9 @@ App.propTypes = {
   mistakes: PropTypes.number.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
-  step: PropTypes.number.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object),
+  resetGame: PropTypes.func.isRequired,
+  step: PropTypes.number.isRequired,
 };
 
 
@@ -135,10 +154,12 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 const mapDispatchToProps = (dispatch) => ({
   onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
 
-  onUserAnswer: (userAnswer, question, mistakes, maxMistakes) => {
+  onUserAnswer: (userAnswer, question) => {
     dispatch(ActionCreator.incrementStep());
-    dispatch(ActionCreator.incrementMistake(userAnswer, question, mistakes, maxMistakes));
-  }
+    dispatch(ActionCreator.incrementMistake(userAnswer, question));
+  },
+
+  resetGame: () => dispatch(ActionCreator.resetGame()),
 });
 
 

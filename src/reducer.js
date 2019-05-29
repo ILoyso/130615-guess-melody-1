@@ -43,7 +43,7 @@ const ActionCreator = {
     payload: 1,
   }),
 
-  incrementMistake: (userAnswer, question, mistakes, maxMistakes) => {
+  incrementMistake: (userAnswer, question) => {
     let answerIsCorrect = false;
 
     switch (question.type) {
@@ -55,15 +55,15 @@ const ActionCreator = {
         break;
     }
 
-    if (!answerIsCorrect && mistakes + 1 >= maxMistakes) {
-      return {
-        type: ActionType.RESET_GAME,
-      };
-    }
-
     return {
       type: ActionType.INCREMENT_MISTAKES,
       payload: answerIsCorrect ? 0 : 1,
+    };
+  },
+
+  resetGame: () => {
+    return {
+      type: ActionType.RESET_GAME
     };
   },
 };
@@ -96,6 +96,7 @@ const reducer = (state = initialState, action) => {
 
 export {
   ActionCreator,
+  ActionType,
   isArtistAnswerCorrect,
   isGenreAnswerCorrect,
   reducer

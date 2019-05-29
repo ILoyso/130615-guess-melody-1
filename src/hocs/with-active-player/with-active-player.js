@@ -20,6 +20,26 @@ const withActivePlayer = (Component) => {
       this.state = {
         activePlayer: -1,
       };
+
+      this.playButtonClickHandlers = {};
+    }
+
+    /**
+     * Method for caching the handler
+     * @param {Number} id
+     * @return {*}
+     */
+    getOnPlayButtonClick(id) {
+      if (!this.playButtonClickHandlers.hasOwnProperty(id)) {
+        this.playButtonClickHandlers[id] = () => {
+          const {activePlayer} = this.state;
+          this.setState({
+            activePlayer: activePlayer === id ? -1 : id
+          });
+        };
+      }
+
+      return this.playButtonClickHandlers[id];
     }
 
     render() {
@@ -31,9 +51,7 @@ const withActivePlayer = (Component) => {
           return <AudioPlayerWrapped
             src={it.src}
             isPlaying={index === activePlayer}
-            onPlayButtonClick={() => this.setState({
-              activePlayer: activePlayer === index ? -1 : index
-            })}
+            onPlayButtonClick={this.getOnPlayButtonClick(index)}
           />;
         }}
       />;

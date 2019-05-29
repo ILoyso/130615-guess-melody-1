@@ -8,11 +8,22 @@ import ArtistQuestionScreen from '../artist-question-screen/artist-question-scre
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
 import GameWrapper from '../game-wrapper/game-wrapper.jsx';
 
+import withTransformProps from '../../hocs/with-transform-props/with-transform-props';
 import withActivePlayer from '../../hocs/with-active-player/with-active-player';
 import withUserAnswer from '../../hocs/with-user-answer/with-user-answer';
 
 
-const GenreQuestionScreenWrapped = withUserAnswer(withActivePlayer(GenreQuestionScreen));
+const transformPlayerToAnswer = (props) => {
+  const newProps = Object.assign({}, props, {
+    renderAnswer: props.renderPlayer,
+  });
+  delete newProps.renderPlayer;
+  return newProps;
+};
+
+const ArtistQuestionScreenWrapped = withActivePlayer(ArtistQuestionScreen);
+const GenreQuestionScreenWrapped = withUserAnswer(withActivePlayer(
+    withTransformProps(transformPlayerToAnswer)(GenreQuestionScreen)));
 
 
 // Application component, here the whole process begins
@@ -82,7 +93,7 @@ class App extends React.PureComponent {
         onAnswer={onAnswer}
       />;
 
-      case `artist`: return <ArtistQuestionScreen
+      case `artist`: return <ArtistQuestionScreenWrapped
         question={question}
         onAnswer={onAnswer}
       />;

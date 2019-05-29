@@ -41,6 +41,7 @@ it(`GenreQuestionScreen correctly renders`, () => {
     onPlayButtonClick,
     question
   } = questionMock;
+  const renderAnswer = jest.fn();
 
   const createNodeMock = (element) => {
     if (element.type === `audio`) {
@@ -58,6 +59,7 @@ it(`GenreQuestionScreen correctly renders`, () => {
       onChange={onChange}
       onPlayButtonClick={onPlayButtonClick}
       question={question}
+      renderAnswer={renderAnswer}
       userAnswer={[false, false, false, false]}
     />, {createNodeMock})
     .toJSON();

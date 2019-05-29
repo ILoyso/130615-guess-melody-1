@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AudioPlayer from '../audio-player/audio-player.jsx';
-
 
 // Component for game where need to choose genre
 class GenreQuestionScreen extends React.PureComponent {
@@ -13,11 +11,10 @@ class GenreQuestionScreen extends React.PureComponent {
    */
   render() {
     const {
-      activePlayer,
       onAnswer,
       onChange,
-      onPlayButtonClick,
       question,
+      renderAnswer,
       userAnswer
     } = this.props;
 
@@ -34,11 +31,7 @@ class GenreQuestionScreen extends React.PureComponent {
       >
 
         {answers.map((answer, index) => <div className="track" key={index}>
-          <AudioPlayer
-            isPlaying={index === activePlayer}
-            onPlayButtonClick={() => onPlayButtonClick(index)}
-            src={answer.src}
-          />
+          {renderAnswer(answer, index)}
           <div className="game__answer">
             <input
               checked={userAnswer[index]}
@@ -61,10 +54,8 @@ class GenreQuestionScreen extends React.PureComponent {
 
 
 GenreQuestionScreen.propTypes = {
-  activePlayer: PropTypes.number.isRequired,
   onAnswer: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  onPlayButtonClick: PropTypes.func.isRequired,
   question: PropTypes.shape({
     answers: PropTypes.arrayOf(PropTypes.shape({
       src: PropTypes.string.isRequired,
@@ -73,6 +64,7 @@ GenreQuestionScreen.propTypes = {
     genre: PropTypes.oneOf([`rock`, `jazz`, `blues`]).isRequired,
     type: PropTypes.oneOf([`genre`, `artist`]).isRequired,
   }).isRequired,
+  renderAnswer: PropTypes.func.isRequired,
   userAnswer: PropTypes.arrayOf(PropTypes.bool).isRequired
 };
 

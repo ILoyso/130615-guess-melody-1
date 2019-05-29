@@ -43,6 +43,7 @@ describe(`GenreQuestionScreen`, () => {
     const onAnswer = jest.fn();
     const onChange = jest.fn();
     const onPlayButtonClick = jest.fn();
+    const renderAnswer = jest.fn();
 
     const genreQuestion = shallow(<GenreQuestionScreen
       activePlayer={activePlayer}
@@ -50,6 +51,7 @@ describe(`GenreQuestionScreen`, () => {
       onChange={onChange}
       onPlayButtonClick={onPlayButtonClick}
       question={question}
+      renderAnswer={renderAnswer}
       userAnswer={[]}
     />);
 
@@ -73,6 +75,7 @@ describe(`GenreQuestionScreen`, () => {
     } = questionMock;
     const onAnswer = jest.fn();
     const onPlayButtonClick = jest.fn();
+    const renderAnswer = jest.fn();
 
     const genreQuestion = shallow(<GenreQuestionScreenWrapped
       activePlayer={activePlayer}
@@ -80,6 +83,7 @@ describe(`GenreQuestionScreen`, () => {
       onAnswer={onAnswer}
       onPlayButtonClick={onPlayButtonClick}
       question={question}
+      renderAnswer={renderAnswer}
     />);
 
     const render = genreQuestion.dive();
@@ -105,6 +109,7 @@ describe(`GenreQuestionScreen`, () => {
     const onAnswer = jest.fn();
     const onChange = jest.fn();
     const onPlayButtonClick = jest.fn();
+    const renderAnswer = jest.fn();
     const userAnswer = [false, true, false, false];
 
     const genreQuestion = shallow(<GenreQuestionScreen
@@ -114,6 +119,7 @@ describe(`GenreQuestionScreen`, () => {
       onPlayButtonClick={onPlayButtonClick}
       question={question}
       userAnswer={userAnswer}
+      renderAnswer={renderAnswer}
     />);
 
     const form = genreQuestion.find(`form`);

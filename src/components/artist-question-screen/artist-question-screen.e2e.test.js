@@ -34,10 +34,12 @@ const questionMock = {
 
 it(`Click on user answer should pass to the callback data-object from which this answer was created`, () => {
   const {onAnswer, question} = questionMock;
+  const renderPlayer = jest.fn();
 
   const screen = shallow(<ArtistQuestionScreen
     onAnswer={onAnswer}
     question={question}
+    renderPlayer={renderPlayer}
   />);
 
   const answerInputs = screen.find(`input`);

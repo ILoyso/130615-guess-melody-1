@@ -12,6 +12,12 @@ class Mistakes extends React.PureComponent {
     </div>;
   }
 
+  /**
+   * Function for render mistakes from template
+   * @param {Number} count
+   * @return {Array}
+   * @private
+   */
   _getMistakeTemplate(count) {
     const mistakesTemplate = [];
 

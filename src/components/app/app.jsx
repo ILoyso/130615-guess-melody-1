@@ -15,6 +15,11 @@ import withTransformProps from '../../hocs/with-transform-props/with-transform-p
 import withUserAnswer from '../../hocs/with-user-answer/with-user-answer';
 
 
+/**
+ * Function for update props from renderPlayer to renderAnswer
+ * @param {Object} props
+ * @return {*}
+ */
 const transformPlayerToAnswer = (props) => {
   const newProps = Object.assign({}, props, {
     renderAnswer: props.renderPlayer,
@@ -53,12 +58,17 @@ class App extends React.PureComponent {
   _getScreen(question) {
     if (!question) {
       const {
-        step,
-        questions
+        mistakes,
+        questions,
+        resetGame,
+        step
       } = this.props;
 
       if (step > questions.length - 1) {
-        return <WinScreen/>;
+        return <WinScreen
+          mistakes={mistakes}
+          onReplayButtonClick={resetGame}
+        />;
       } else {
         const {
           maxMistakes,
@@ -68,8 +78,8 @@ class App extends React.PureComponent {
 
         return <WelcomeScreen
           errorCount={maxMistakes}
-          gameTime={gameTime}
-          onClick={onWelcomeScreenClick}
+          onPlayClick={onWelcomeScreenClick}
+          time={gameTime}
         />;
       }
     }

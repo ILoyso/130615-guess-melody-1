@@ -6,7 +6,9 @@ import GameOverScreen from './game-over-screen.jsx';
 
 it(`GameOverScreen correctly renders`, () => {
   const gameOverScreen = renderer
-    .create(<GameOverScreen />).toJSON();
+    .create(<GameOverScreen
+      onRelaunchButtonClick={jest.fn()}
+    />).toJSON();
 
   expect(gameOverScreen).toMatchSnapshot();
 });

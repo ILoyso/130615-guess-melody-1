@@ -38,11 +38,13 @@ it(`ArtistQuestionScreen correctly renders`, () => {
     }
     return null;
   };
+  const renderPlayer = jest.fn();
 
   const artistScreen = renderer
     .create(<ArtistQuestionScreen
-      question={questionMock.question}
       onAnswer={questionMock.onAnswer}
+      question={questionMock.question}
+      renderPlayer={renderPlayer}
     />, {createNodeMock})
     .toJSON();
 

@@ -11,7 +11,12 @@ import {questions} from './mocks/questions';
 
 // Entry point for project
 const init = (gameQuestions) => {
-  const store = createStore(reducer);
+  /* eslint-disable no-underscore-dangle */
+  const store = createStore(
+      reducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+  /* eslint-enable */
 
   const {errorCount, gameTime} = settings;
 

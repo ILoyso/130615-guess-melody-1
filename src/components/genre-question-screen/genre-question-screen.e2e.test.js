@@ -3,11 +3,13 @@ import Enzyme, {shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
 import GenreQuestionScreen from './genre-question-screen';
+import withUserAnswer from '../../hocs/with-user-answer/with-user-answer';
 
 
 Enzyme.configure({adapter: new Adapter()});
 
 const questionMock = {
+  activePlayer: -1,
   question: {
     answers: [
       {
@@ -34,12 +36,23 @@ const questionMock = {
 
 describe(`GenreQuestionScreen`, () => {
   it(`When user answers genre question form is not sent`, () => {
-    const {question} = questionMock;
+    const {
+      activePlayer,
+      question
+    } = questionMock;
     const onAnswer = jest.fn();
+    const onChange = jest.fn();
+    const onPlayButtonClick = jest.fn();
+    const renderAnswer = jest.fn();
 
     const genreQuestion = shallow(<GenreQuestionScreen
+      activePlayer={activePlayer}
       onAnswer={onAnswer}
+      onChange={onChange}
+      onPlayButtonClick={onPlayButtonClick}
       question={question}
+      renderAnswer={renderAnswer}
+      userAnswer={[]}
     />);
 
     const form = genreQuestion.find(`form`);
@@ -53,38 +66,60 @@ describe(`GenreQuestionScreen`, () => {
     expect(formSendPrevention).toHaveBeenCalledTimes(1);
   });
 
-  it(`Rendered checkboxes are synchronized with state`, () => {
-    const {question} = questionMock;
-    const onAnswer = jest.fn();
+  it(`Rendered checkboxes are synchronized with prop "userAnswer"`, () => {
+    const GenreQuestionScreenWrapped = withUserAnswer(GenreQuestionScreen);
 
-    const genreQuestion = shallow(<GenreQuestionScreen
+    const {
+      activePlayer,
+      question
+    } = questionMock;
+    const onAnswer = jest.fn();
+    const onPlayButtonClick = jest.fn();
+    const renderAnswer = jest.fn();
+
+    const genreQuestion = shallow(<GenreQuestionScreenWrapped
+      activePlayer={activePlayer}
+      answers={question.answers}
       onAnswer={onAnswer}
+      onPlayButtonClick={onPlayButtonClick}
       question={question}
+      renderAnswer={renderAnswer}
     />);
 
-    expect(genreQuestion.state(`userAnswer`)).toEqual([false, false, false, false]);
-
-    const inputs = genreQuestion.find(`input`);
+    const render = genreQuestion.dive();
+    const inputs = render.find(`input`);
     const inputOne = inputs.at(0);
     const inputTwo = inputs.at(1);
 
     inputOne.simulate(`change`);
-    expect(genreQuestion.state(`userAnswer`)).toEqual([true, false, false, false]);
+    expect(genreQuestion.prop(`userAnswer`)).toEqual([true, false, false, false]);
 
     inputOne.simulate(`change`);
-    expect(genreQuestion.state(`userAnswer`)).toEqual([false, false, false, false]);
+    expect(genreQuestion.prop(`userAnswer`)).toEqual([false, false, false, false]);
 
     inputTwo.simulate(`change`);
-    expect(genreQuestion.state(`userAnswer`)).toEqual([false, true, false, false]);
+    expect(genreQuestion.prop(`userAnswer`)).toEqual([false, true, false, false]);
   });
 
-  it(`User answer passed to callback is consistent with internal component state`, () => {
-    const {question} = questionMock;
+  it(`User answer passed to callback is consistent with "userAnswer" prop`, () => {
+    const {
+      activePlayer,
+      question
+    } = questionMock;
     const onAnswer = jest.fn();
+    const onChange = jest.fn();
+    const onPlayButtonClick = jest.fn();
+    const renderAnswer = jest.fn();
+    const userAnswer = [false, true, false, false];
 
     const genreQuestion = shallow(<GenreQuestionScreen
+      activePlayer={activePlayer}
       onAnswer={onAnswer}
+      onChange={onChange}
+      onPlayButtonClick={onPlayButtonClick}
       question={question}
+      userAnswer={userAnswer}
+      renderAnswer={renderAnswer}
     />);
 
     const form = genreQuestion.find(`form`);
@@ -92,8 +127,7 @@ describe(`GenreQuestionScreen`, () => {
     inputTwo.simulate(`change`);
     form.simulate(`submit`, {preventDefault() {}});
 
-    expect(genreQuestion.state(`userAnswer`)).toEqual([false, true, false, false]);
+    expect(genreQuestion.find(`input`).map((it) => it.prop(`checked`))).toEqual(userAnswer);
     expect(onAnswer).toHaveBeenCalledTimes(1);
-    expect(onAnswer).toHaveBeenNthCalledWith(1, [false, true, false, false]);
   });
 });

@@ -6,8 +6,6 @@ import {App} from './app.jsx';
 const mock = {
   questions: [
     {
-      type: `genre`,
-      genre: `rock`,
       answers: [
         {
           src: `test.mp3`,
@@ -26,13 +24,10 @@ const mock = {
           genre: `rock`,
         },
       ],
+      genre: `rock`,
+      type: `genre`,
     },
     {
-      type: `artist`,
-      song: {
-        artist: `Jim Beam`,
-        src: `path.mp3`,
-      },
       answers: [
         {
           picture: `path.jpg`,
@@ -47,6 +42,11 @@ const mock = {
           artist: `Jim Beam`,
         },
       ],
+      song: {
+        artist: `Jim Beam`,
+        src: `path.mp3`,
+      },
+      type: `artist`,
     }
   ],
 };
@@ -56,13 +56,14 @@ describe(`App Component`, () => {
   it(`App correctly renders first screen`, () => {
     const {questions} = mock;
     const app = renderer.create(<App
-      mistakes={0}
-      maxMistakes={Infinity}
       gameTime={100}
-      questions={questions}
-      step={-1}
+      maxMistakes={Infinity}
+      mistakes={0}
       onUserAnswer={jest.fn()}
       onWelcomeScreenClick={jest.fn()}
+      questions={questions}
+      resetGame={jest.fn()}
+      step={-1}
     />).toJSON();
 
     expect(app).toMatchSnapshot();
@@ -71,13 +72,14 @@ describe(`App Component`, () => {
   it(`App correctly renders genre question screen`, () => {
     const {questions} = mock;
     const app = renderer.create(<App
-      mistakes={0}
-      maxMistakes={Infinity}
       gameTime={100}
-      questions={questions}
-      step={1}
+      maxMistakes={Infinity}
+      mistakes={0}
       onUserAnswer={jest.fn()}
       onWelcomeScreenClick={jest.fn()}
+      questions={questions}
+      resetGame={jest.fn()}
+      step={1}
     />, {
       createNodeMock: () => {
         return {};
@@ -90,13 +92,14 @@ describe(`App Component`, () => {
   it(`App correctly renders artist question screen`, () => {
     const {questions} = mock;
     const app = renderer.create(<App
-      mistakes={0}
-      maxMistakes={Infinity}
       gameTime={100}
-      questions={questions}
-      step={2}
+      maxMistakes={Infinity}
+      mistakes={0}
       onUserAnswer={jest.fn()}
       onWelcomeScreenClick={jest.fn()}
+      questions={questions}
+      resetGame={jest.fn()}
+      step={1}
     />, {
       createNodeMock: () => {
         return {};

@@ -5,7 +5,10 @@ import GenreQuestionScreen from './genre-question-screen.jsx';
 
 
 const questionMock = {
+  activePlayer: -1,
   onAnswer: jest.fn(),
+  onChange: jest.fn(),
+  onPlayButtonClick: jest.fn(),
   question: {
     answers: [
       {
@@ -31,6 +34,15 @@ const questionMock = {
 };
 
 it(`GenreQuestionScreen correctly renders`, () => {
+  const {
+    activePlayer,
+    onAnswer,
+    onChange,
+    onPlayButtonClick,
+    question
+  } = questionMock;
+  const renderAnswer = jest.fn();
+
   const createNodeMock = (element) => {
     if (element.type === `audio`) {
       return {
@@ -42,8 +54,13 @@ it(`GenreQuestionScreen correctly renders`, () => {
 
   const genreScreen = renderer
     .create(<GenreQuestionScreen
-      onAnswer={questionMock.onAnswer}
-      question={questionMock.question}
+      activePlayer={activePlayer}
+      onAnswer={onAnswer}
+      onChange={onChange}
+      onPlayButtonClick={onPlayButtonClick}
+      question={question}
+      renderAnswer={renderAnswer}
+      userAnswer={[false, false, false, false]}
     />, {createNodeMock})
     .toJSON();
 

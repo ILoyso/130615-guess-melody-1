@@ -14,6 +14,9 @@ import withActivePlayer from '../../hocs/with-active-player/with-active-player';
 import withTransformProps from '../../hocs/with-transform-props/with-transform-props';
 import withUserAnswer from '../../hocs/with-user-answer/with-user-answer';
 
+import {getStep, getMistakes} from '../../reducer/game/selectors';
+import {getQuestions} from '../../reducer/data/selectors';
+
 
 /**
  * Function for update props from renderPlayer to renderAnswer
@@ -151,9 +154,9 @@ App.propTypes = {
  * @return {Object}
  */
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  step: state.game.step,
-  mistakes: state.game.mistakes,
-  questions: state.data.questions,
+  mistakes: getMistakes(state),
+  step: getStep(state),
+  questions: getQuestions(state),
 });
 
 

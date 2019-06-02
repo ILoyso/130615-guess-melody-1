@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-import {reducer} from './reducer';
 import App from './components/app/app.jsx';
 import {settings} from './config';
-import {questions} from './mocks/questions';
+import {reducer, ActionCreator} from './reducer';
 
 
 // Entry point for project
-const init = (gameQuestions) => {
+const init = () => {
   /* eslint-disable no-underscore-dangle */
   const store = createStore(
       reducer,
@@ -20,12 +19,13 @@ const init = (gameQuestions) => {
 
   const {errorCount, gameTime} = settings;
 
+  store.dispatch(ActionCreator.loadQuestions());
+
   // React render for App component
   ReactDOM.render(<Provider store={store}>
     <App
       maxMistakes={errorCount}
       gameTime={gameTime}
-      questions={gameQuestions}
     />
   </Provider>,
   document.querySelector(`.main`)
@@ -33,4 +33,4 @@ const init = (gameQuestions) => {
 };
 
 
-init(questions);
+init();

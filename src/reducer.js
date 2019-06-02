@@ -1,12 +1,16 @@
+import {questions} from './mocks/questions';
+
 const initialState = {
   mistakes: 0,
   step: -1,
+  questions: [],
 };
 
 
 const ActionType = {
   INCREMENT_STEP: `INCREMENT_STEP`,
   INCREMENT_MISTAKES: `INCREMENT_MISTAKES`,
+  LOAD_QUESTIONS: `LOAD_QUESTIONS`,
   RESET_GAME: `RESET_GAME`
 };
 
@@ -61,6 +65,13 @@ const ActionCreator = {
     };
   },
 
+  loadQuestions: () => {
+    return {
+      type: ActionType.LOAD_QUESTIONS,
+      payload: questions,
+    };
+  },
+
   resetGame: () => {
     return {
       type: ActionType.RESET_GAME
@@ -85,6 +96,10 @@ const reducer = (state = initialState, action) => {
 
     case ActionType.INCREMENT_STEP: return Object.assign({}, state, {
       step: state.step + action.payload,
+    });
+
+    case ActionType.LOAD_QUESTIONS: return Object.assign({}, state, {
+      questions: action.payload,
     });
 
     case ActionType.RESET_GAME: return Object.assign({}, initialState);

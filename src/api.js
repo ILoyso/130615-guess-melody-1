@@ -1,11 +1,30 @@
 import axios from 'axios';
+import {ActionCreator} from './reducer';
 
 
-const api = axios.create({
-  baseURL: `https://es31-server.appspot.com/guess-melody`,
-  timeout: 1000 * 5,
-  withCredentials: true,
-});
+/**
+ * Api for work with server
+ * @param {Function} dispatch
+ * @return {AxiosInstance}
+ */
+export const createAPI = (dispatch) => {
+  const api = axios.create({
+    baseURL: `https://es31-server.appspot.com/guess-melody`,
+    timeout: 1000 * 5,
+    withCredentials: true,
+  });
 
+  const onSuccess = (response) => response;
 
-export default api;
+  const onFail = (err) => {
+    if (err.response.status === 403) {
+      dispatch(ActionCreator.requireAuthorization(true));
+    }
+
+    throw err;
+  };
+
+  api.interceptors.response.use(onSuccess, onFail);
+
+  return api;
+};

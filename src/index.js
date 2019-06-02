@@ -8,21 +8,23 @@ import {compose} from 'recompose';
 import App from './components/app/app.jsx';
 import {settings} from './config';
 import {reducer, Operation} from './reducer';
+import {createAPI} from './api';
 
 
 // Entry point for project
 const init = () => {
+  const {errorCount, gameTime} = settings;
+  const api = createAPI((...args) => store.dispatch(...args));
+
   /* eslint-disable no-underscore-dangle */
   const store = createStore(
       reducer,
       compose(
-          applyMiddleware(thunk),
+          applyMiddleware(thunk.withExtraArgument(api)),
           window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
       )
   );
   /* eslint-enable */
-
-  const {errorCount, gameTime} = settings;
 
   store.dispatch(Operation.loadQuestions());
 

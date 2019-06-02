@@ -1,3 +1,6 @@
+import api from './api';
+
+
 const initialState = {
   mistakes: 0,
   step: -1,
@@ -80,10 +83,9 @@ const ActionCreator = {
 
 const Operation = {
   loadQuestions: () => (dispatch) => {
-    fetch(`https://es31-server.appspot.com/guess-melody/questions`)
-      .then((response) => response.json())
-      .then((questions) => {
-        dispatch(ActionCreator.loadQuestions(questions));
+    return api.get(`/questions`)
+      .then((response) => {
+        dispatch(ActionCreator.loadQuestions(response.data));
       });
   },
 };

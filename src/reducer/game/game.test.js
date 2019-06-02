@@ -1,14 +1,10 @@
-import MockAdapter from 'axios-mock-adapter';
-
-import {createAPI} from './api';
 import {
   ActionCreator,
   ActionType,
   isArtistAnswerCorrect,
   isGenreAnswerCorrect,
-  Operation,
   reducer
-} from './reducer';
+} from './game';
 
 
 describe(`Business logic is correct`, () => {
@@ -242,8 +238,7 @@ describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
     expect(reducer(undefined, {})).toEqual({
       step: -1,
-      mistakes: 0,
-      questions: []
+      mistakes: 0
     });
   });
 
@@ -301,28 +296,7 @@ describe(`Reducer works correctly`, () => {
       type: ActionType.RESET_GAME,
     })).toEqual({
       step: -1,
-      mistakes: 0,
-      questions: []
+      mistakes: 0
     });
-  });
-
-  it(`Should make a correct API call to /questions`, function () {
-    const dispatch = jest.fn();
-    const api = createAPI(dispatch);
-    const apiMock = new MockAdapter(api);
-    const questionLoader = Operation.loadQuestions();
-
-    apiMock
-      .onGet(`/questions`)
-      .reply(200, [{fake: true}]);
-
-    return questionLoader(dispatch, jest.fn(), api)
-      .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.LOAD_QUESTIONS,
-          payload: [{fake: true}],
-        });
-      });
   });
 });

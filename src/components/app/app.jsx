@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {ActionCreator} from '../../reducer';
+import {ActionCreator} from '../../reducer/game/game';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
 import GameOverScreen from '../game-over-screen/game-over-screen.jsx';
 import GameWrapper from '../game-wrapper/game-wrapper.jsx';
@@ -151,9 +151,9 @@ App.propTypes = {
  * @return {Object}
  */
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  step: state.step,
-  mistakes: state.mistakes,
-  questions: state.questions,
+  step: state.game.step,
+  mistakes: state.game.mistakes,
+  questions: state.data.questions,
 });
 
 

@@ -7,7 +7,8 @@ import {compose} from 'recompose';
 
 import App from './components/app/app.jsx';
 import {settings} from './config';
-import {reducer, Operation} from './reducer';
+import reducer from './reducer/reducer';
+import {Operation} from './reducer/data/data';
 import {createAPI} from './api';
 
 

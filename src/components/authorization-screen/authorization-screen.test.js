@@ -6,7 +6,12 @@ import AuthorizationScreen from './authorization-screen.jsx';
 
 it(`AuthorizationScreen correctly renders`, () => {
   const authorizationScreen = renderer
-    .create(<AuthorizationScreen />).toJSON();
+    .create(<AuthorizationScreen
+      logIn={jest.fn()}
+      name={`Test Name`}
+      onChange={jest.fn()}
+      password={`test-test`}
+    />).toJSON();
 
   expect(authorizationScreen).toMatchSnapshot();
 });

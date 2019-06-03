@@ -12,11 +12,15 @@ import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import WinScreen from '../win-screen/win-screen.jsx';
 
 import withActivePlayer from '../../hocs/with-active-player/with-active-player';
+import withAuthorization from '../../hocs/with-authorization/with-authorization';
 import withTransformProps from '../../hocs/with-transform-props/with-transform-props';
 import withUserAnswer from '../../hocs/with-user-answer/with-user-answer';
 
+import {Operation} from '../../reducer/user/user';
+
 import {getStep, getMistakes} from '../../reducer/game/selectors';
 import {getQuestions} from '../../reducer/data/selectors';
+import {getAuthorizationStatus} from '../../reducer/user/selectors';
 
 
 /**
@@ -33,6 +37,7 @@ const transformPlayerToAnswer = (props) => {
 };
 
 const ArtistQuestionScreenWrapped = withActivePlayer(ArtistQuestionScreen);
+const AuthorizationScreenWrapped = withAuthorization(AuthorizationScreen);
 const GenreQuestionScreenWrapped = withUserAnswer(withActivePlayer(
     withTransformProps(transformPlayerToAnswer)(GenreQuestionScreen)));
 
@@ -61,7 +66,11 @@ class App extends React.PureComponent {
    */
   _getScreen(question) {
     if (this.props.isAuthorizationRequired) {
-      return <AuthorizationScreen />;
+      const {logIn} = this.props;
+
+      return <AuthorizationScreenWrapped
+        logIn = {logIn}
+      />;
     }
 
     if (!question) {
@@ -79,6 +88,7 @@ class App extends React.PureComponent {
         />;
       } else {
         const {
+          isAuthorization,
           maxMistakes,
           gameTime,
           onWelcomeScreenClick,
@@ -86,7 +96,10 @@ class App extends React.PureComponent {
 
         return <WelcomeScreen
           errorCount={maxMistakes}
-          onPlayClick={onWelcomeScreenClick}
+          onPlayClick={() => {
+            onWelcomeScreenClick();
+            isAuthorization();
+          }}
           time={gameTime}
         />;
       }
@@ -142,7 +155,9 @@ class App extends React.PureComponent {
 
 App.propTypes = {
   gameTime: PropTypes.number.isRequired,
+  isAuthorization: PropTypes.func.isRequired,
   isAuthorizationRequired: PropTypes.bool.isRequired,
+  logIn: PropTypes.func.isRequired,
   maxMistakes: PropTypes.number.isRequired,
   mistakes: PropTypes.number.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
@@ -160,7 +175,7 @@ App.propTypes = {
  * @return {Object}
  */
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  isAuthorizationRequired: state.isAuthorizationRequired,
+  isAuthorizationRequired: getAuthorizationStatus(state),
   mistakes: getMistakes(state),
   step: getStep(state),
   questions: getQuestions(state),
@@ -173,6 +188,10 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
  * @return {Function}
  */
 const mapDispatchToProps = (dispatch) => ({
+  isAuthorization: () => dispatch(Operation.addUserData()),
+
+  logIn: (data) => dispatch(Operation.logIn(data)),
+
   onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
 
   onUserAnswer: (userAnswer, question) => {

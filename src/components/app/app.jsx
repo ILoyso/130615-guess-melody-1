@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import {ActionCreator} from '../../reducer/game/game';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
+import AuthorizationScreen from '../../components/authorization-screen/authorization-screen.jsx';
 import GameOverScreen from '../game-over-screen/game-over-screen.jsx';
 import GameWrapper from '../game-wrapper/game-wrapper.jsx';
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen.jsx';
@@ -59,6 +60,10 @@ class App extends React.PureComponent {
    * @private
    */
   _getScreen(question) {
+    if (this.props.isAuthorizationRequired) {
+      return <AuthorizationScreen />;
+    }
+
     if (!question) {
       const {
         mistakes,
@@ -137,6 +142,7 @@ class App extends React.PureComponent {
 
 App.propTypes = {
   gameTime: PropTypes.number.isRequired,
+  isAuthorizationRequired: PropTypes.bool.isRequired,
   maxMistakes: PropTypes.number.isRequired,
   mistakes: PropTypes.number.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
@@ -154,6 +160,7 @@ App.propTypes = {
  * @return {Object}
  */
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  isAuthorizationRequired: state.isAuthorizationRequired,
   mistakes: getMistakes(state),
   step: getStep(state),
   questions: getQuestions(state),

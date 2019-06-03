@@ -4,7 +4,7 @@ import {
   isArtistAnswerCorrect,
   isGenreAnswerCorrect,
   reducer
-} from './reducer';
+} from './game';
 
 
 describe(`Business logic is correct`, () => {
@@ -238,7 +238,7 @@ describe(`Reducer works correctly`, () => {
   it(`Reducer without additional parameters should return initial state`, () => {
     expect(reducer(undefined, {})).toEqual({
       step: -1,
-      mistakes: 0,
+      mistakes: 0
     });
   });
 
@@ -296,7 +296,7 @@ describe(`Reducer works correctly`, () => {
       type: ActionType.RESET_GAME,
     })).toEqual({
       step: -1,
-      mistakes: 0,
+      mistakes: 0
     });
   });
 });

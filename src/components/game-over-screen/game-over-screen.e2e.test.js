@@ -15,7 +15,7 @@ it(`Click on play again button correctly works`, () => {
     onRelaunchButtonClick={onRelaunchButtonClick}
   />);
 
-  const button = gameOverScreen.find(`button`);
+  const button = gameOverScreen.find(`.replay`);
   button.simulate(`click`);
 
   expect(onRelaunchButtonClick).toHaveBeenCalledTimes(1);

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import {Link} from 'react-router-dom';
 
 
 // AuthorizationScreen component
@@ -45,7 +46,9 @@ const AuthorizationScreen = (props) => {
         className="login__button button"
         onClick={logIn}
         type="submit"
-      >Войти</button>
+      >
+        <Link to="/">Войти</Link>
+      </button>
     </form>
   </section>;
 };

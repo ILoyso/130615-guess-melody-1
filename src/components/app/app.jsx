@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 
 import {ActionCreator} from '../../reducer/game/game';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
@@ -52,14 +52,28 @@ class App extends React.PureComponent {
    */
   render() {
     const {
+      logIn,
+      mistakes,
       questions,
+      resetGame,
       step,
     } = this.props;
 
-    return <Switch>
-      <Route path="/" exact render={this._getScreen(questions[step])} />
-      <Route path="/login" component={ArtistQuestionScreenWrapped} />
-    </Switch>;
+    return <BrowserRouter>
+      <Switch>
+        <Route path="/" exact render={() => this._getScreen(questions[step])} />
+        <Route path="/results" render={() => <WinScreen
+          mistakes={mistakes}
+          onReplayButtonClick={resetGame}
+        />} />
+        <Route path="/lose" render={() => <GameOverScreen
+          onRelaunchButtonClick={resetGame}
+        />} />
+        <Route path="/login" render={() => <AuthorizationScreenWrapped
+          logIn = {logIn}
+        />} />
+      </Switch>
+    </BrowserRouter>;
   }
 
   /**
@@ -69,48 +83,33 @@ class App extends React.PureComponent {
    * @private
    */
   _getScreen(question) {
-    if (!question) {
-      const {
-        mistakes,
-        questions,
-        resetGame,
-        step
-      } = this.props;
-
-      if (step > questions.length - 1) {
-        return <WinScreen
-          mistakes={mistakes}
-          onReplayButtonClick={resetGame}
-        />;
-      } else {
-        const {
-          isAuthorization,
-          maxMistakes,
-          gameTime,
-          onWelcomeScreenClick,
-        } = this.props;
-
-        return <WelcomeScreen
-          errorCount={maxMistakes}
-          onPlayClick={() => {
-            onWelcomeScreenClick();
-            isAuthorization();
-          }}
-          time={gameTime}
-        />;
-      }
-    }
-
     const {
+      gameTime,
+      isAuthorizationRequired,
       onUserAnswer,
+      onWelcomeScreenClick,
       maxMistakes,
       mistakes,
-      resetGame
+      questions,
+      step
     } = this.props;
 
+
+    if (step >= questions.length && isAuthorizationRequired) {
+      return <Redirect to="/login" />;
+    } else if (step >= questions.length) {
+      return <Redirect to="/results" />;
+    }
+
     if (mistakes >= maxMistakes) {
-      return <GameOverScreen
-        onRelaunchButtonClick={resetGame}
+      return <Redirect to="/lose" />;
+    }
+
+    if (step === -1) {
+      return <WelcomeScreen
+        errorCount={maxMistakes}
+        time={gameTime}
+        onPlayClick={onWelcomeScreenClick}
       />;
     }
 
@@ -151,7 +150,6 @@ class App extends React.PureComponent {
 
 App.propTypes = {
   gameTime: PropTypes.number.isRequired,
-  isAuthorization: PropTypes.func.isRequired,
   isAuthorizationRequired: PropTypes.bool.isRequired,
   logIn: PropTypes.func.isRequired,
   maxMistakes: PropTypes.number.isRequired,
@@ -184,8 +182,6 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
  * @return {Function}
  */
 const mapDispatchToProps = (dispatch) => ({
-  isAuthorization: () => dispatch(Operation.addUserData()),
-
   logIn: (data) => dispatch(Operation.logIn(data)),
 
   onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),

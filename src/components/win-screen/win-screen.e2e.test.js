@@ -16,7 +16,7 @@ it(`Click on play again button correctly works`, () => {
     onReplayButtonClick={onReplayButtonClick}
   />);
 
-  const button = winScreen.find(`button`);
+  const button = winScreen.find(`.replay`);
   button.simulate(`click`);
 
   expect(onReplayButtonClick).toHaveBeenCalledTimes(1);

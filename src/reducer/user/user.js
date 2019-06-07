@@ -52,6 +52,18 @@ const Operation = {
       });
   },
 
+  checkAuth: () => {
+    return (dispatch, _getState, api) => {
+      return api
+        .get(`/login`)
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(ActionCreator.requireAuthorization(true));
+          }
+        });
+    };
+  },
+
   logIn: (data) => (dispatch, _getState, api) => {
     return api.post(`/login`, data)
       .then((response) => {

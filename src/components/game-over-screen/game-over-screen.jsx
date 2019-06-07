@@ -1,5 +1,6 @@
 import React from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 
 // GameOverScreen component
@@ -12,13 +13,13 @@ const GameOverScreen = (props) => {
     </div>
     <h2 className="result__title">Какая жалость!</h2>
     <p className="result__total result__total--fail">У вас закончились все попытки. Ничего, повезёт в следующий раз!</p>
-    <button
+    <Link
       className="replay"
       onClick={onRelaunchButtonClick}
-      type="button"
+      to="/"
     >
       Попробовать ещё раз
-    </button>
+    </Link>
   </section>;
 };
 

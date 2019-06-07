@@ -4,6 +4,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {compose} from 'recompose';
+import {BrowserRouter} from 'react-router-dom';
 
 import App from './components/app/app.jsx';
 import {settings} from './config';
@@ -31,10 +32,12 @@ const init = () => {
 
   // React render for App component
   ReactDOM.render(<Provider store={store}>
-    <App
-      maxMistakes={errorCount}
-      gameTime={gameTime}
-    />
+    <BrowserRouter>
+      <App
+        gameTime={gameTime}
+        maxMistakes={errorCount}
+      />
+    </BrowserRouter>
   </Provider>,
   document.querySelector(`.main`)
   );

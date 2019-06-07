@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
 
 import {ActionCreator} from '../../reducer/game/game';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
@@ -55,7 +56,10 @@ class App extends React.PureComponent {
       step,
     } = this.props;
 
-    return this._getScreen(questions[step]);
+    return <Switch>
+      <Route path="/" exact render={this._getScreen(questions[step])} />
+      <Route path="/login" component={ArtistQuestionScreenWrapped} />
+    </Switch>;
   }
 
   /**
@@ -65,14 +69,6 @@ class App extends React.PureComponent {
    * @private
    */
   _getScreen(question) {
-    if (this.props.isAuthorizationRequired) {
-      const {logIn} = this.props;
-
-      return <AuthorizationScreenWrapped
-        logIn = {logIn}
-      />;
-    }
-
     if (!question) {
       const {
         mistakes,
